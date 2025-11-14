@@ -133,7 +133,7 @@ export async function POST(request: Request) {
             
             <div style="background: #dcfce7; padding: 20px; border-radius: 8px; text-align: center; margin: 20px 0;">
               <p style="margin: 0 0 10px 0; color: #166534; font-size: 14px; font-weight: 600;">NEED IMMEDIATE ASSISTANCE?</p>
-              <a href="tel:0412345678" style="display: inline-block; background: #16a34a; color: white; text-decoration: none; padding: 12px 30px; border-radius: 6px; font-weight: bold; font-size: 18px;">📞 Call 0412 345 678</a>
+              <a href="tel:0412345678" style="display: inline-block; background: #16a34a; color: white; text-decoration: none; padding: 12px 30px; border-radius: 6px; font-weight: bold; font-size: 18px;">📞 Call 0429 187 791</a>
             </div>
             
             <p style="font-size: 16px; color: #333; margin-top: 30px;">
@@ -144,7 +144,7 @@ export async function POST(request: Request) {
           
           <div style="text-align: center; padding: 20px; color: #666; font-size: 12px;">
             <p style="margin: 5px 0;">LMK Tree Services | Melbourne, Victoria</p>
-            <p style="margin: 5px 0;">Phone: 0412 345 678 | Email: kyle@lmktreeservices.com</p>
+            <p style="margin: 5px 0;">Phone: 0429 187 791 | Email: kyle@lmktreeservices.com</p>
             <p style="margin: 15px 0 5px 0; color: #999;">Fully Licensed & Insured | ABN: 12 345 678 901</p>
           </div>
         </div>

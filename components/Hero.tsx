@@ -1,29 +1,11 @@
 // components/Hero.tsx
 'use client'
 
-import React, { useEffect, useState } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
-import { ChevronDown, Shield, Award, Clock, TreePine } from 'lucide-react'
-import { Button } from './ui/Button'
+import React from 'react'
+import { motion } from 'framer-motion'
+import { Shield, Award, Clock, TreePine, ChevronDown, Star, Phone, CheckCircle } from 'lucide-react'
 
 export function Hero() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
-  const { scrollY } = useScroll()
-  const y1 = useTransform(scrollY, [0, 300], [0, 100])
-  const y2 = useTransform(scrollY, [0, 300], [0, -100])
-  const opacity = useTransform(scrollY, [0, 300], [1, 0])
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      const { clientX, clientY } = e
-      const x = (clientX / window.innerWidth - 0.5) * 20
-      const y = (clientY / window.innerHeight - 0.5) * 20
-      setMousePosition({ x, y })
-    }
-    window.addEventListener('mousemove', handleMouseMove)
-    return () => window.removeEventListener('mousemove', handleMouseMove)
-  }, [])
-
   const scrollToConsultation = () => {
     document.getElementById('consultation')?.scrollIntoView({ behavior: 'smooth' })
   }
@@ -33,185 +15,320 @@ export function Hero() {
   }
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-sage-50 via-white to-primary-50/30">
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <motion.div
-          style={{ y: y1 }}
-          className="absolute -top-20 -left-20 w-[500px] h-[500px]"
-        >
-          <div className="w-full h-full bg-gradient-to-br from-primary-200/30 to-transparent rounded-full blur-3xl" />
-        </motion.div>
-        <motion.div
-          style={{ y: y2 }}
-          className="absolute -bottom-20 -right-20 w-[600px] h-[600px]"
-        >
-          <div className="w-full h-full bg-gradient-to-tl from-sage-200/40 to-transparent rounded-full blur-3xl" />
-        </motion.div>
-        
-        {/* Floating tree silhouettes */}
-        <motion.div
-          className="absolute top-20 right-10 opacity-10"
-          animate={{
-            y: [0, -30, 0],
-            rotate: [0, 5, 0],
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: 'easeInOut',
-          }}
-        >
-          <TreePine className="w-32 h-32 text-primary-700" />
-        </motion.div>
-        <motion.div
-          className="absolute bottom-40 left-10 opacity-10"
-          animate={{
-            y: [0, -20, 0],
-            rotate: [0, -5, 0],
-          }}
-          transition={{
-            duration: 10,
-            repeat: Infinity,
-            ease: 'easeInOut',
-          }}
-        >
-          <TreePine className="w-24 h-24 text-sage-700" />
-        </motion.div>
-      </div>
+    <section style={{
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #f0fdf4 0%, #ffffff 50%, #dcfce7 100%)',
+      position: 'relative',
+      overflow: 'hidden'
+    }}>
+      {/* Background decoration */}
+      <div style={{
+        position: 'absolute',
+        top: '-100px',
+        left: '-100px',
+        width: '400px',
+        height: '400px',
+        background: '#22c55e',
+        opacity: '0.1',
+        borderRadius: '50%',
+        filter: 'blur(100px)'
+      }} />
+      <div style={{
+        position: 'absolute',
+        bottom: '-100px',
+        right: '-100px',
+        width: '400px',
+        height: '400px',
+        background: '#10b981',
+        opacity: '0.1',
+        borderRadius: '50%',
+        filter: 'blur(100px)'
+      }} />
 
-      <motion.div 
-        className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center z-10"
-        style={{ opacity }}
-      >
+      <div style={{
+        position: 'relative',
+        maxWidth: '1280px',
+        margin: '0 auto',
+        padding: '80px 20px',
+        textAlign: 'center'
+      }}>
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] }}
-          style={{
-            transform: `translate3d(${mousePosition.x}px, ${mousePosition.y}px, 0)`,
-          }}
-          className="transition-transform duration-300 ease-out"
+          transition={{ duration: 0.8 }}
         >
           {/* Trust badges */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
-            className="inline-flex items-center gap-8 mb-8"
-          >
-            <div className="flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full border border-primary-200 shadow-lg">
-              <Shield className="w-5 h-5 text-primary-600" />
-              <span className="text-sm font-semibold text-bark-800">Fully Insured</span>
-            </div>
-            <div className="flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full border border-primary-200 shadow-lg">
-              <Award className="w-5 h-5 text-primary-600" />
-              <span className="text-sm font-semibold text-bark-800">Certified Arborists</span>
-            </div>
-            <div className="hidden sm:flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full border border-primary-200 shadow-lg">
-              <Clock className="w-5 h-5 text-primary-600" />
-              <span className="text-sm font-semibold text-bark-800">24/7 Emergency</span>
-            </div>
-          </motion.div>
+          <div style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            gap: '12px',
+            marginBottom: '32px'
+          }}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2 }}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '8px 16px',
+                background: 'white',
+                borderRadius: '999px',
+                boxShadow: '0 10px 25px rgba(0,0,0,0.08)',
+                border: '1px solid #dcfce7'
+              }}
+            >
+              <Shield style={{ width: '16px', height: '16px', color: '#16a34a' }} />
+              <span style={{ fontSize: '14px', fontWeight: '600', color: '#374151' }}>Fully Insured</span>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.3 }}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '8px 16px',
+                background: 'white',
+                borderRadius: '999px',
+                boxShadow: '0 10px 25px rgba(0,0,0,0.08)',
+                border: '1px solid #dcfce7'
+              }}
+            >
+              <Award style={{ width: '16px', height: '16px', color: '#16a34a' }} />
+              <span style={{ fontSize: '14px', fontWeight: '600', color: '#374151' }}>Certified Arborists</span>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.4 }}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '8px 16px',
+                background: 'white',
+                borderRadius: '999px',
+                boxShadow: '0 10px 25px rgba(0,0,0,0.08)',
+                border: '1px solid #dcfce7'
+              }}
+            >
+              <Clock style={{ width: '16px', height: '16px', color: '#16a34a' }} />
+              <span style={{ fontSize: '14px', fontWeight: '600', color: '#374151' }}>24/7 Emergency</span>
+            </motion.div>
+          </div>
 
-          <motion.h1 
-            className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold mb-6 leading-tight"
-            initial={{ opacity: 0, y: 20 }}
+          {/* Main heading */}
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.8 }}
+            transition={{ delay: 0.3 }}
+            style={{
+              fontSize: 'clamp(2.5rem, 8vw, 5rem)',
+              fontWeight: 'bold',
+              marginBottom: '24px',
+              lineHeight: '1.1'
+            }}
           >
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-bark-800 via-bark-700 to-sage-700">
-              Melbourne's Premier
-            </span>
-            <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 via-primary-500 to-sage-600">
+            <span style={{ display: 'block', color: '#111827' }}>Melbourne's Premier</span>
+            <span style={{
+              display: 'block',
+              background: 'linear-gradient(135deg, #16a34a 0%, #10b981 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text'
+            }}>
               Tree Services
             </span>
           </motion.h1>
 
-          <motion.p 
-            className="text-xl sm:text-2xl text-bark-600 mb-12 max-w-3xl mx-auto leading-relaxed font-light"
+          {/* Subheading */}
+          <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.5, duration: 0.8 }}
+            transition={{ delay: 0.5 }}
+            style={{
+              fontSize: '1.25rem',
+              color: '#4b5563',
+              maxWidth: '800px',
+              margin: '0 auto 48px',
+              lineHeight: '1.6'
+            }}
           >
-            Expert arborists delivering safe, efficient tree removal, pruning, and maintenance 
-            with a commitment to environmental excellence
+            Expert arborists delivering safe, efficient tree removal, pruning, and 
+            maintenance with a commitment to environmental excellence
           </motion.p>
 
-          <motion.div 
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16"
+          {/* CTA Buttons */}
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7, duration: 0.5 }}
+            transition={{ delay: 0.6 }}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '16px',
+              marginBottom: '64px'
+            }}
           >
-            <Button 
-              size="xl" 
-              onClick={scrollToConsultation}
-              className="group relative overflow-hidden"
-            >
-              <span className="relative z-10">Get Free Consultation</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-primary-700 to-primary-600 transform transition-transform group-hover:scale-110" />
-            </Button>
-            <Button 
-              size="xl" 
-              variant="glass" 
-              onClick={scrollToServices}
-              className="backdrop-blur-md"
-            >
-              Explore Our Services
-            </Button>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', justifyContent: 'center' }}>
+              <button
+                onClick={scrollToConsultation}
+                style={{
+                  padding: '16px 32px',
+                  background: 'linear-gradient(135deg, #16a34a 0%, #10b981 100%)',
+                  color: 'white',
+                  fontWeight: 'bold',
+                  fontSize: '16px',
+                  borderRadius: '999px',
+                  boxShadow: '0 20px 40px rgba(34, 197, 94, 0.3)',
+                  border: 'none',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  transition: 'transform 0.3s, box-shadow 0.3s'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'scale(1.05)';
+                  e.currentTarget.style.boxShadow = '0 25px 50px rgba(34, 197, 94, 0.4)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'scale(1)';
+                  e.currentTarget.style.boxShadow = '0 20px 40px rgba(34, 197, 94, 0.3)';
+                }}
+              >
+                <Phone style={{ width: '20px', height: '20px' }} />
+                Get Free Consultation
+              </button>
+              <button
+                onClick={scrollToServices}
+                style={{
+                  padding: '16px 32px',
+                  background: 'white',
+                  color: '#16a34a',
+                  fontWeight: 'bold',
+                  fontSize: '16px',
+                  borderRadius: '999px',
+                  border: '2px solid #16a34a',
+                  boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = '#16a34a';
+                  e.currentTarget.style.color = 'white';
+                  e.currentTarget.style.transform = 'scale(1.05)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'white';
+                  e.currentTarget.style.color = '#16a34a';
+                  e.currentTarget.style.transform = 'scale(1)';
+                }}
+              >
+                Explore Our Services
+              </button>
+            </div>
           </motion.div>
 
-          {/* Stats with better design */}
+          {/* Stats */}
           <motion.div
-            className="grid grid-cols-3 gap-4 sm:gap-8 max-w-2xl mx-auto"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.9, duration: 0.6 }}
+            transition={{ delay: 0.8 }}
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+              gap: '24px',
+              maxWidth: '800px',
+              margin: '0 auto'
+            }}
           >
-            {[
-              { number: '15+', label: 'Years Excellence', icon: '🌳' },
-              { number: '2,500+', label: 'Trees Serviced', icon: '✨' },
-              { number: '100%', label: 'Safety Record', icon: '🛡️' },
-            ].map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                className="relative group"
-                whileHover={{ scale: 1.05 }}
-                transition={{ type: 'spring', stiffness: 300 }}
-              >
-                <div className="bg-white/70 backdrop-blur-md rounded-2xl p-6 border border-primary-100 shadow-xl hover:shadow-2xl transition-all duration-300">
-                  <div className="text-3xl mb-2">{stat.icon}</div>
-                  <div className="text-3xl sm:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-sage-600">
-                    {stat.number}
-                  </div>
-                  <div className="text-sm text-bark-600 font-medium mt-1">{stat.label}</div>
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-primary-500/10 to-sage-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </div>
-              </motion.div>
-            ))}
+            <div style={{
+              background: 'white',
+              borderRadius: '16px',
+              padding: '24px',
+              boxShadow: '0 10px 40px rgba(0, 0, 0, 0.08)',
+              border: '1px solid #dcfce7',
+              transition: 'transform 0.3s, box-shadow 0.3s',
+              cursor: 'pointer'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-5px)';
+              e.currentTarget.style.boxShadow = '0 20px 50px rgba(0, 0, 0, 0.12)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 10px 40px rgba(0, 0, 0, 0.08)';
+            }}>
+              <TreePine style={{ width: '48px', height: '48px', color: '#16a34a', margin: '0 auto 12px' }} />
+              <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#111827' }}>15+</div>
+              <div style={{ color: '#4b5563', fontSize: '14px' }}>Years Excellence</div>
+            </div>
+            <div style={{
+              background: 'white',
+              borderRadius: '16px',
+              padding: '24px',
+              boxShadow: '0 10px 40px rgba(0, 0, 0, 0.08)',
+              border: '1px solid #dcfce7',
+              transition: 'transform 0.3s, box-shadow 0.3s',
+              cursor: 'pointer'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-5px)';
+              e.currentTarget.style.boxShadow = '0 20px 50px rgba(0, 0, 0, 0.12)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 10px 40px rgba(0, 0, 0, 0.08)';
+            }}>
+              <Star style={{ width: '48px', height: '48px', color: '#eab308', margin: '0 auto 12px' }} />
+              <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#111827' }}>2,500+</div>
+              <div style={{ color: '#4b5563', fontSize: '14px' }}>Trees Serviced</div>
+              <div style={{ color: '#9ca3af', fontSize: '11px', marginTop: '4px' }}>SCROLL TO EXPLORE</div>
+            </div>
+            <div style={{
+              background: 'white',
+              borderRadius: '16px',
+              padding: '24px',
+              boxShadow: '0 10px 40px rgba(0, 0, 0, 0.08)',
+              border: '1px solid #dcfce7',
+              transition: 'transform 0.3s, box-shadow 0.3s',
+              cursor: 'pointer'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-5px)';
+              e.currentTarget.style.boxShadow = '0 20px 50px rgba(0, 0, 0, 0.12)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 10px 40px rgba(0, 0, 0, 0.08)';
+            }}>
+              <CheckCircle style={{ width: '48px', height: '48px', color: '#16a34a', margin: '0 auto 12px' }} />
+              <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#111827' }}>100%</div>
+              <div style={{ color: '#4b5563', fontSize: '14px' }}>Safety Record</div>
+            </div>
           </motion.div>
         </motion.div>
 
-        {/* Animated scroll indicator */}
+        {/* Scroll indicator */}
         <motion.div
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
           animate={{ y: [0, 10, 0] }}
           transition={{ duration: 2, repeat: Infinity }}
+          style={{
+            position: 'absolute',
+            bottom: '32px',
+            left: '50%',
+            transform: 'translateX(-50%)'
+          }}
         >
-          <div className="flex flex-col items-center gap-2">
-            <span className="text-xs text-bark-500 font-medium uppercase tracking-wider">Scroll to explore</span>
-            <div className="w-6 h-10 rounded-full border-2 border-bark-400 flex justify-center">
-              <motion.div
-                className="w-1.5 h-1.5 bg-primary-600 rounded-full mt-2"
-                animate={{ y: [0, 16, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-              />
-            </div>
-          </div>
+          <ChevronDown style={{ width: '32px', height: '32px', color: '#9ca3af' }} />
         </motion.div>
-      </motion.div>
+      </div>
     </section>
   )
 }

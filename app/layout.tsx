@@ -7,8 +7,10 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'LMK Tree Services | Professional Tree Removal & Lopping Melbourne',
-  description: 'Melbourne\'s trusted tree service provider. Expert tree removal, lopping, and maintenance. Fully insured, safe, and reliable. Get your free consultation today.',
-  keywords: 'tree removal, tree lopping, tree services, arborist, Melbourne, tree pruning, stump removal',
+  description:
+    "Melbourne's trusted tree service provider. Expert tree removal, lopping, pruning, and stump removal. Fully insured, safe, and reliable. Get your free consultation today.",
+  keywords:
+    'tree removal, tree lopping, tree services, arborist, Melbourne, tree pruning, stump removal',
 }
 
 export default function RootLayout({

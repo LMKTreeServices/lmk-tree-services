@@ -89,7 +89,7 @@ export function Footer() {
                     href="tel:0412345678"
                     className="text-bark-300 hover:text-primary-400 transition-colors"
                   >
-                    0412 345 678
+                    0429 187 791
                   </a>
                 </div>
               </li>
