@@ -2,8 +2,8 @@
 'use client'
 
 import React from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
-import { Scissors, TreeDeciduous, Leaf, Shield, Truck, Clock, Sparkles, Trees } from 'lucide-react'
+import { motion } from 'framer-motion'
+import { Scissors, TreeDeciduous, Leaf, Shield, Truck, Clock, ArrowRight, Sparkles } from 'lucide-react'
 
 const services = [
   {
@@ -11,143 +11,232 @@ const services = [
     title: 'Tree Removal',
     description: 'Safe and efficient removal of unwanted or dangerous trees with minimal impact to your property.',
     features: ['Crane assistance available', 'Stump grinding included', 'Full cleanup service'],
-    color: 'from-red-500 to-orange-500',
+    price: 'From $800',
+    color: '#ef4444',
   },
   {
     icon: Scissors,
     title: 'Precision Pruning',
     description: 'Expert trimming and shaping to enhance tree health, safety, and aesthetic appeal.',
     features: ['Crown thinning', 'Deadwood removal', 'Structural pruning'],
-    color: 'from-primary-500 to-green-500',
+    price: 'From $350',
+    color: '#22c55e',
   },
   {
     icon: Leaf,
     title: 'Tree Health Care',
     description: 'Comprehensive assessment and treatment plans to ensure your trees thrive for generations.',
     features: ['Disease diagnosis', 'Pest management', 'Soil analysis'],
-    color: 'from-green-500 to-emerald-500',
+    price: 'From $200',
+    color: '#3b82f6',
   },
   {
     icon: Shield,
     title: 'Emergency Response',
     description: '24/7 emergency service for storm damage, fallen trees, and urgent safety hazards.',
     features: ['Rapid response', 'Insurance assistance', 'Priority service'],
-    color: 'from-blue-500 to-indigo-500',
+    price: 'Call anytime',
+    color: '#a855f7',
   },
   {
     icon: Truck,
     title: 'Waste Management',
     description: 'Eco-friendly disposal and recycling of all green waste, mulch available upon request.',
     features: ['Wood chipping', 'Mulch delivery', 'Complete removal'],
-    color: 'from-yellow-500 to-amber-500',
+    price: 'From $150',
+    color: '#eab308',
   },
   {
-    icon: Trees,
+    icon: Clock,
     title: 'Land Clearing',
     description: 'Professional vegetation management for development, fire prevention, and landscaping.',
     features: ['Site preparation', 'Selective clearing', 'Erosion control'],
-    color: 'from-purple-500 to-pink-500',
+    price: 'Quote on request',
+    color: '#6366f1',
   },
 ]
 
 export function Services() {
-  const { scrollYProgress } = useScroll()
-  const scale = useTransform(scrollYProgress, [0, 1], [0.8, 1])
-
   return (
-    <section id="services" className="py-24 bg-gradient-to-b from-white via-sage-50/30 to-white relative overflow-hidden">
-      {/* Background pattern */}
-      <div className="absolute inset-0 bg-nature-pattern opacity-50" />
-      
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <section id="services" style={{ 
+      padding: '80px 0',
+      background: 'linear-gradient(180deg, #ffffff 0%, #f0fdf4 50%, #dcfce7 100%)'
+    }}>
+      <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 24px' }}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          style={{ textAlign: 'center', marginBottom: '64px' }}
         >
-          <div className="inline-flex items-center gap-2 mb-4">
-            <Sparkles className="w-5 h-5 text-primary-500" />
-            <span className="text-sm font-semibold text-primary-600 uppercase tracking-wider">Our Expertise</span>
-            <Sparkles className="w-5 h-5 text-primary-500" />
-          </div>
-          <h2 className="text-5xl sm:text-6xl font-bold mb-6">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-bark-800 to-sage-700">
-              Professional Tree Services
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+            <Sparkles style={{ width: '20px', height: '20px', color: '#16a34a' }} />
+            <span style={{ 
+              fontSize: '14px', 
+              fontWeight: '700', 
+              color: '#16a34a',
+              letterSpacing: '0.1em',
+              textTransform: 'uppercase'
+            }}>
+              Our Expertise
             </span>
+            <Sparkles style={{ width: '20px', height: '20px', color: '#16a34a' }} />
+          </div>
+          <h2 style={{ 
+            fontSize: '48px', 
+            fontWeight: '800', 
+            color: '#15803d',
+            marginBottom: '16px'
+          }}>
+            Professional Tree Care Solutions
           </h2>
-          <p className="text-xl text-bark-600 max-w-3xl mx-auto leading-relaxed">
-            From routine maintenance to emergency response, our certified arborists deliver 
-            excellence in every branch of tree care
+          <p style={{ 
+            fontSize: '20px', 
+            color: '#166534',
+            maxWidth: '700px',
+            margin: '0 auto'
+          }}>
+            From routine maintenance to emergency response, we deliver excellence in every branch of tree care
           </p>
         </motion.div>
 
-        <motion.div 
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-          style={{ scale }}
-        >
+        <div style={{ 
+          display: 'grid', 
+          gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
+          gap: '32px'
+        }}>
           {services.map((service, index) => (
             <motion.div
               key={service.title}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              whileHover={{ y: -10 }}
-              className="group relative"
+              transition={{ delay: index * 0.1 }}
+              whileHover={{ scale: 1.02, y: -5 }}
+              style={{
+                background: 'white',
+                borderRadius: '24px',
+                padding: '32px',
+                boxShadow: '0 10px 40px rgba(0, 0, 0, 0.08)',
+                border: '1px solid rgba(34, 197, 94, 0.1)',
+                position: 'relative',
+                overflow: 'hidden',
+                cursor: 'default',
+                transition: 'all 0.3s ease'
+              }}
             >
-              <div className="h-full bg-white/80 backdrop-blur-sm rounded-3xl p-8 border border-primary-100 shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden">
-                {/* Gradient overlay on hover */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 group-hover:opacity-5 transition-opacity duration-500`} />
-                
-                {/* Icon container with gradient background */}
-                <div className="relative mb-6">
-                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${service.color} p-3.5 shadow-lg transform group-hover:scale-110 transition-transform duration-300`}>
-                    <service.icon className="w-full h-full text-white" />
-                  </div>
-                  <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${service.color} blur-xl opacity-40 group-hover:opacity-60 transition-opacity duration-300`} />
-                </div>
-
-                <h3 className="text-2xl font-bold text-bark-900 mb-3 group-hover:text-primary-700 transition-colors duration-300">
-                  {service.title}
-                </h3>
-                <p className="text-bark-600 leading-relaxed mb-6">
-                  {service.description}
-                </p>
-
-                {/* Feature list */}
-                <ul className="space-y-2">
-                  {service.features.map((feature) => (
-                    <li key={feature} className="flex items-center gap-2 text-sm text-bark-700">
-                      <div className="w-1.5 h-1.5 bg-primary-500 rounded-full" />
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                {/* Decorative corner accent */}
-                <div className="absolute -bottom-2 -right-2 w-20 h-20 bg-gradient-to-br from-primary-100 to-transparent rounded-tl-3xl opacity-50" />
+              {/* Top color bar */}
+              <div style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                height: '4px',
+                background: service.color
+              }} />
+              
+              {/* Icon */}
+              <div style={{
+                width: '64px',
+                height: '64px',
+                background: `linear-gradient(135deg, ${service.color}20, ${service.color}10)`,
+                borderRadius: '16px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: '24px'
+              }}>
+                <service.icon style={{ width: '32px', height: '32px', color: service.color }} />
               </div>
+
+              <h3 style={{ 
+                fontSize: '24px', 
+                fontWeight: '700', 
+                color: '#15803d',
+                marginBottom: '12px'
+              }}>
+                {service.title}
+              </h3>
+              
+              <p style={{ 
+                color: '#4b5563',
+                marginBottom: '16px',
+                lineHeight: '1.6'
+              }}>
+                {service.description}
+              </p>
+              
+              <div style={{ 
+                fontSize: '24px', 
+                fontWeight: '700', 
+                color: '#16a34a',
+                marginBottom: '16px'
+              }}>
+                {service.price}
+              </div>
+
+              <ul style={{ marginBottom: '24px' }}>
+                {service.features.map((feature) => (
+                  <li key={feature} style={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    gap: '8px',
+                    marginBottom: '8px',
+                    color: '#6b7280',
+                    fontSize: '14px'
+                  }}>
+                    <div style={{
+                      width: '20px',
+                      height: '20px',
+                      borderRadius: '50%',
+                      background: '#dcfce7',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexShrink: 0
+                    }}>
+                      <div style={{
+                        width: '8px',
+                        height: '8px',
+                        borderRadius: '50%',
+                        background: '#16a34a'
+                      }} />
+                    </div>
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+
+              <button style={{
+                width: '100%',
+                padding: '12px',
+                borderRadius: '12px',
+                border: '2px solid #16a34a',
+                background: 'white',
+                color: '#16a34a',
+                fontWeight: '600',
+                fontSize: '16px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                transition: 'all 0.3s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = '#16a34a'
+                e.currentTarget.style.color = 'white'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'white'
+                e.currentTarget.style.color = '#16a34a'
+              }}>
+                Learn More
+                <ArrowRight style={{ width: '16px', height: '16px' }} />
+              </button>
             </motion.div>
           ))}
-        </motion.div>
-
-        {/* CTA Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="text-center mt-16"
-        >
-          <div className="inline-flex items-center gap-4 px-6 py-3 bg-gradient-to-r from-primary-50 to-sage-50 rounded-full border border-primary-200">
-            <Clock className="w-5 h-5 text-primary-600" />
-            <span className="text-bark-700 font-medium">
-              Same-day quotes available • Free consultations • Emergency service 24/7
-            </span>
-          </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   )

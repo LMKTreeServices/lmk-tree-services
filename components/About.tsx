@@ -114,11 +114,11 @@ export function About() {
                 Get Free Quote
               </button>
               <a 
-                href="tel:0412345678"
+                href="tel:0429187791"
                 className="px-8 py-3 bg-green-700 text-white font-bold rounded-full hover:bg-green-800 transition-all flex items-center justify-center gap-2"
               >
                 <Shield className="w-5 h-5" />
-                Call 0412 345 678
+                Call 0429 187 791
               </a>
             </div>
           </div>

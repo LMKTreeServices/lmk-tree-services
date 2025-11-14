@@ -86,7 +86,7 @@ export function Footer() {
                 <Phone className="w-5 h-5 text-primary-400 flex-shrink-0 mt-0.5" />
                 <div>
                   <a
-                    href="tel:0412345678"
+                    href="tel:0429187791"
                     className="text-bark-300 hover:text-primary-400 transition-colors"
                   >
                     0429 187 791
