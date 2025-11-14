@@ -3,84 +3,114 @@
 
 import React from 'react'
 import { motion } from 'framer-motion'
-import { Phone, Calendar, UserCheck, Wrench, CheckCircle } from 'lucide-react'
+import {
+  ClipboardCheck,
+  Home,
+  Shield,
+  Sparkles,
+  Calendar,
+  PhoneCall,
+} from 'lucide-react'
 
 const steps = [
   {
-    icon: Phone,
-    title: 'Initial Contact',
-    description: 'Call us or submit an online form for a free consultation',
+    number: '01',
+    icon: PhoneCall,
+    title: 'Initial Call & Job Discussion',
+    text: 'We ask the right questions up front — tree type, access, hazards, and your goals — so we arrive prepared.',
   },
   {
+    number: '02',
+    icon: Home,
+    title: 'On-Site Assessment & Quote',
+    text: 'A certified arborist inspects the tree, surrounding structures and access points. You get a clear, fixed quote with no surprises.',
+  },
+  {
+    number: '03',
+    icon: ClipboardCheck,
+    title: 'Permit Guidance (If Required)',
+    text: 'Some Melbourne councils require permits. We help determine if one is needed and guide you through the correct steps.',
+  },
+  {
+    number: '04',
+    icon: Shield,
+    title: 'Safe, Professional Work',
+    text: 'Using the right equipment and safe techniques, we carry out the job efficiently and safely with full public liability insurance.',
+  },
+  {
+    number: '05',
+    icon: Sparkles,
+    title: 'Full Site Clean-Up',
+    text: 'Branches chipped, stumps removed on request, and your yard left cleaner than we found it. Mulch available at no cost.',
+  },
+  {
+    number: '06',
     icon: Calendar,
-    title: 'Site Assessment',
-    description: 'Our arborist visits your property for a detailed evaluation',
-  },
-  {
-    icon: UserCheck,
-    title: 'Custom Quote',
-    description: 'Receive a detailed, transparent quote with no hidden costs',
-  },
-  {
-    icon: Wrench,
-    title: 'Professional Service',
-    description: 'Our certified team completes the work safely and efficiently',
-  },
-  {
-    icon: CheckCircle,
-    title: 'Complete Cleanup',
-    description: 'We leave your property spotless with all debris removed',
+    title: 'Follow-Up & Support',
+    text: 'We provide aftercare advice and support for future maintenance, pest issues or replanting.',
   },
 ]
 
 export function Process() {
   return (
-    <section className="py-20 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="process" className="py-24 bg-white relative">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="mb-16"
         >
-          <span className="inline-block px-4 py-2 bg-green-100 text-green-700 font-semibold text-sm rounded-full mb-4">
-            HOW IT WORKS
+          <span className="inline-block px-4 py-2 bg-green-100 text-green-700 font-semibold text-xs tracking-wide rounded-full mb-4">
+            OUR PROCESS
           </span>
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Simple 5-Step Process
+          <h2 className="text-4xl md:text-5xl font-bold text-bark-900 mb-4 text-left">
+            How We Handle Your Tree Work — Start to Finish
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            From your first call to final cleanup, we make tree care simple and stress-free
+          <p className="text-lg text-bark-700 max-w-2xl text-left">
+            A clean, transparent workflow that homeowners trust. No guesswork — just
+            certified arborists doing things properly.
           </p>
         </motion.div>
 
-        <div className="relative">
-          {/* Connection Line */}
-          <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-0.5 bg-gray-200 transform -translate-y-1/2" />
+        {/* Vertical timeline */}
+        <div className="relative border-l-2 border-bark-200 pl-8 space-y-14">
+          {steps.map((step, index) => (
+            <motion.div
+              key={step.title}
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.05 }}
+              className="relative"
+            >
+              {/* Dot */}
+              <span className="absolute -left-[29px] top-2 flex h-5 w-5 items-center justify-center">
+                <span className="h-3 w-3 rounded-full bg-green-600 ring-4 ring-green-100" />
+              </span>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-8 relative">
-            {steps.map((step, index) => (
-              <motion.div
-                key={step.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="relative text-center"
-              >
-                <div className="bg-white relative z-10">
-                  <div className="w-20 h-20 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
-                    <step.icon className="w-10 h-10 text-white" />
+              {/* Content */}
+              <div className="bg-bark-50 shadow-sm border border-bark-100 rounded-2xl p-6">
+                <div className="flex items-start gap-4">
+                  <div className="bg-green-100 rounded-xl p-3 flex-shrink-0">
+                    <step.icon className="w-6 h-6 text-green-600" />
                   </div>
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-gray-900 text-white rounded-full flex items-center justify-center text-sm font-bold">
-                    {index + 1}
+                  <div>
+                    <p className="text-sm font-semibold text-green-700 tracking-widest">
+                      {step.number}
+                    </p>
+                    <h3 className="text-xl font-bold text-bark-900 mt-1 mb-2">
+                      {step.title}
+                    </h3>
+                    <p className="text-bark-700 text-sm leading-relaxed">
+                      {step.text}
+                    </p>
                   </div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">{step.title}</h3>
-                  <p className="text-gray-600 text-sm">{step.description}</p>
                 </div>
-              </motion.div>
-            ))}
-          </div>
+              </div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>

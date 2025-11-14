@@ -1,148 +1,158 @@
-// components/Footer.tsx
-import React from 'react'
-import { Phone, Mail, MapPin, Clock, Facebook, Instagram } from 'lucide-react'
+// components/footer.tsx
+import Logo from "@/components/logo";
+import { Github, Twitter, Linkedin, Mail, MapPin, Phone } from "lucide-react";
 
-export function Footer() {
+export default function Footer() {
+  const currentYear = new Date().getFullYear();
+
   return (
-    <footer className="bg-bark-900 text-bark-100">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          <div>
-            <h3 className="text-2xl font-bold text-white mb-4">
-              LMK Tree Services
-            </h3>
-            <p className="text-bark-300 mb-4">
-              Melbourne&apos;s trusted tree service provider. Professional,
-              safe, and reliable.
+    <footer className="bg-gradient-to-b from-slate-50 to-slate-100 border-t border-slate-200">
+      <div className="mx-auto max-w-7xl px-6 py-20 sm:px-8 lg:px-12">
+        <div className="grid gap-12 lg:grid-cols-4">
+          {/* Brand / intro */}
+          <div className="lg:col-span-2">
+            <Logo />
+            <p className="mt-6 max-w-md text-base text-slate-600 leading-relaxed">
+              Building exceptional digital products that drive business growth.
+              From startups to enterprises, we bring ideas to life.
             </p>
-            <div className="flex gap-4">
+            <div className="mt-8 flex gap-5">
               <a
                 href="#"
-                className="w-10 h-10 bg-bark-800 rounded-full flex items-center justify-center hover:bg-primary-600 transition-colors duration-200"
-                aria-label="Facebook"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-200 text-slate-600 transition-all hover:bg-emerald-600 hover:text-white hover:scale-110"
+                aria-label="Twitter"
               >
-                <Facebook className="w-5 h-5" />
+                <Twitter className="h-5 w-5" />
               </a>
               <a
                 href="#"
-                className="w-10 h-10 bg-bark-800 rounded-full flex items-center justify-center hover:bg-primary-600 transition-colors duration-200"
-                aria-label="Instagram"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-200 text-slate-600 transition-all hover:bg-emerald-600 hover:text-white hover:scale-110"
+                aria-label="GitHub"
               >
-                <Instagram className="w-5 h-5" />
+                <Github className="h-5 w-5" />
+              </a>
+              <a
+                href="#"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-200 text-slate-600 transition-all hover:bg-emerald-600 hover:text-white hover:scale-110"
+                aria-label="LinkedIn"
+              >
+                <Linkedin className="h-5 w-5" />
               </a>
             </div>
           </div>
 
+          {/* Company links */}
           <div>
-            <h4 className="text-lg font-bold text-white mb-4">Services</h4>
-            <ul className="space-y-2">
+            <h3 className="mb-6 text-sm font-bold uppercase tracking-wider text-slate-900">
+              Company
+            </h3>
+            <ul className="space-y-4">
               <li>
                 <a
-                  href="#services"
-                  className="text-bark-300 hover:text-primary-400 transition-colors"
+                  href="#"
+                  className="text-base text-slate-600 hover:text-emerald-600 transition-colors"
                 >
-                  Tree Removal
+                  About Us
                 </a>
               </li>
               <li>
                 <a
-                  href="#services"
-                  className="text-bark-300 hover:text-primary-400 transition-colors"
+                  href="#"
+                  className="text-base text-slate-600 hover:text-emerald-600 transition-colors"
                 >
-                  Tree Lopping &amp; Pruning
+                  Our Work
                 </a>
               </li>
               <li>
                 <a
-                  href="#services"
-                  className="text-bark-300 hover:text-primary-400 transition-colors"
+                  href="#"
+                  className="text-base text-slate-600 hover:text-emerald-600 transition-colors"
                 >
-                  Tree Health Assessment
+                  Process
                 </a>
               </li>
               <li>
                 <a
-                  href="#services"
-                  className="text-bark-300 hover:text-primary-400 transition-colors"
+                  href="#"
+                  className="text-base text-slate-600 hover:text-emerald-600 transition-colors"
                 >
-                  Emergency Services
+                  Careers
                 </a>
               </li>
               <li>
                 <a
-                  href="#services"
-                  className="text-bark-300 hover:text-primary-400 transition-colors"
+                  href="#"
+                  className="text-base text-slate-600 hover:text-emerald-600 transition-colors"
                 >
-                  Green Waste Removal
+                  Blog
                 </a>
               </li>
             </ul>
           </div>
 
+          {/* Contact details */}
           <div>
-            <h4 className="text-lg font-bold text-white mb-4">Contact</h4>
-            <ul className="space-y-3">
+            <h3 className="mb-6 text-sm font-bold uppercase tracking-wider text-slate-900">
+              Get in Touch
+            </h3>
+            <ul className="space-y-4">
               <li className="flex items-start gap-3">
-                <Phone className="w-5 h-5 text-primary-400 flex-shrink-0 mt-0.5" />
+                <Mail className="mt-0.5 h-5 w-5 text-emerald-600" />
                 <div>
                   <a
-                    href="tel:0429187791"
-                    className="text-bark-300 hover:text-primary-400 transition-colors"
+                    href="mailto:hello@blankslatedev.com"
+                    className="text-base text-slate-600 hover:text-emerald-600 transition-colors"
                   >
-                    0429 187 791
+                    hello@blankslatedev.com
                   </a>
                 </div>
               </li>
               <li className="flex items-start gap-3">
-                <Mail className="w-5 h-5 text-primary-400 flex-shrink-0 mt-0.5" />
+                <Phone className="mt-0.5 h-5 w-5 text-emerald-600" />
                 <div>
                   <a
-                    href="mailto:kyle@lmktreeservices.com"
-                    className="text-bark-300 hover:text-primary-400 transition-colors break-all"
+                    href="tel:+1234567890"
+                    className="text-base text-slate-600 hover:text-emerald-600 transition-colors"
                   >
-                    kyle@lmktreeservices.com
+                    +1 (234) 567-890
                   </a>
                 </div>
               </li>
               <li className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 text-primary-400 flex-shrink-0 mt-0.5" />
-                <div className="text-bark-300">Melbourne, Victoria</div>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-lg font-bold text-white mb-4">Business Hours</h4>
-            <ul className="space-y-2">
-              <li className="flex items-center gap-2">
-                <Clock className="w-5 h-5 text-primary-400" />
-                <span className="text-bark-300">Mon - Fri: 7am - 6pm</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <Clock className="w-5 h-5 text-primary-400" />
-                <span className="text-bark-300">Saturday: 8am - 4pm</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <Clock className="w-5 h-5 text-primary-400" />
-                <span className="text-bark-300">Sunday: Closed</span>
-              </li>
-              <li className="mt-4 text-primary-400 font-semibold">
-                24/7 Emergency Services
+                <MapPin className="mt-0.5 h-5 w-5 text-emerald-600" />
+                <div className="text-base text-slate-600">
+                  San Francisco, CA
+                  <br />
+                  United States
+                </div>
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="border-t border-bark-800 mt-12 pt-8 text-center">
-          <p className="text-bark-400 text-sm">
-            © {new Date().getFullYear()} LMK Tree Services. All rights
-            reserved.
-          </p>
-          <p className="text-bark-500 text-xs mt-2">
-            Fully licensed and insured. ABN: 12 345 678 901
-          </p>
+        {/* Bottom bar */}
+        <div className="mt-16 border-t border-slate-200 pt-8">
+          <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
+            <p className="text-sm text-slate-500">
+              © {currentYear} Blank Slate Dev. All rights reserved.
+            </p>
+            <div className="flex gap-8">
+              <a
+                href="#"
+                className="text-sm text-slate-500 hover:text-emerald-600 transition-colors"
+              >
+                Privacy Policy
+              </a>
+              <a
+                href="#"
+                className="text-sm text-slate-500 hover:text-emerald-600 transition-colors"
+              >
+                Terms of Service
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </footer>
-  )
+  );
 }

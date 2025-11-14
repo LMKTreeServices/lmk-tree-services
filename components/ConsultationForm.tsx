@@ -3,7 +3,14 @@
 
 import React, { useState, useCallback } from 'react'
 import { motion } from 'framer-motion'
-import { Send, CheckCircle, AlertCircle, Upload, X, Image as ImageIcon } from 'lucide-react'
+import {
+  Send,
+  CheckCircle,
+  AlertCircle,
+  Upload,
+  X,
+  Image as ImageIcon,
+} from 'lucide-react'
 import { Input, Textarea } from './ui/Input'
 import { Button } from './ui/Button'
 import { useDropzone } from 'react-dropzone'
@@ -39,35 +46,48 @@ export function ConsultationForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
 
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    // Limit to 5 images
-    const newFiles = acceptedFiles.slice(0, 5 - images.length)
-    
-    if (images.length + acceptedFiles.length > 5) {
-      setErrors((prev) => ({ ...prev, images: 'Maximum 5 images allowed' }))
-      setTimeout(() => setErrors((prev) => ({ ...prev, images: undefined })), 3000)
-    }
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      const remainingSlots = 5 - images.length
+      if (remainingSlots <= 0) {
+        setErrors((prev) => ({ ...prev, images: 'Maximum 5 images allowed' }))
+        setTimeout(
+          () => setErrors((prev) => ({ ...prev, images: undefined })),
+          3000
+        )
+        return
+      }
 
-    // Create preview URLs
-    const newPreviews = newFiles.map(file => URL.createObjectURL(file))
-    
-    setImages((prev) => [...prev, ...newFiles])
-    setImagePreviews((prev) => [...prev, ...newPreviews])
-  }, [images.length])
+      const newFiles = acceptedFiles.slice(0, remainingSlots)
+
+      if (images.length + acceptedFiles.length > 5) {
+        setErrors((prev) => ({ ...prev, images: 'Maximum 5 images allowed' }))
+        setTimeout(
+          () => setErrors((prev) => ({ ...prev, images: undefined })),
+          3000
+        )
+      }
+
+      const newPreviews = newFiles.map((file) => URL.createObjectURL(file))
+
+      setImages((prev) => [...prev, ...newFiles])
+      setImagePreviews((prev) => [...prev, ...newPreviews])
+    },
+    [images.length]
+  )
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: {
-      'image/*': ['.jpeg', '.jpg', '.png', '.webp', '.heic']
+      'image/*': ['.jpeg', '.jpg', '.png', '.webp', '.heic'],
     },
     maxSize: 10485760, // 10MB
     multiple: true,
   })
 
   const removeImage = (index: number) => {
-    // Revoke the preview URL to prevent memory leaks
     URL.revokeObjectURL(imagePreviews[index])
-    
+
     setImages((prev) => prev.filter((_, i) => i !== index))
     setImagePreviews((prev) => prev.filter((_, i) => i !== index))
   }
@@ -102,23 +122,21 @@ export function ConsultationForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (!validateForm()) {
-      return
-    }
+    if (!validateForm()) return
 
     setIsSubmitting(true)
     setSubmitStatus('idle')
 
     try {
-      // Convert images to base64
-      const imagePromises = images.map(file => {
-        return new Promise<string>((resolve, reject) => {
-          const reader = new FileReader()
-          reader.onload = () => resolve(reader.result as string)
-          reader.onerror = reject
-          reader.readAsDataURL(file)
-        })
-      })
+      const imagePromises = images.map(
+        (file) =>
+          new Promise<string>((resolve, reject) => {
+            const reader = new FileReader()
+            reader.onload = () => resolve(reader.result as string)
+            reader.onerror = reject
+            reader.readAsDataURL(file)
+          })
+      )
 
       const base64Images = await Promise.all(imagePromises)
 
@@ -130,7 +148,7 @@ export function ConsultationForm() {
         body: JSON.stringify({
           ...formData,
           images: base64Images,
-          imageNames: images.map(f => f.name),
+          imageNames: images.map((f) => f.name),
         }),
       })
 
@@ -158,7 +176,10 @@ export function ConsultationForm() {
   }
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLTextAreaElement>
+      | React.ChangeEvent<HTMLSelectElement>
   ) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
@@ -168,20 +189,27 @@ export function ConsultationForm() {
   }
 
   return (
-    <section id="consultation" className="py-20 bg-gradient-to-br from-primary-600 to-primary-700">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section
+      id="consultation"
+      className="relative bg-gradient-to-br from-primary-600 to-primary-700 py-20"
+    >
+      {/* subtle overlay */}
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.15)_0,_transparent_55%)]" />
+
+      <div className="relative mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          className="mb-12 text-center"
         >
-          <h2 className="text-4xl sm:text-5xl font-bold text-white mb-4">
+          <h2 className="mb-3 text-4xl font-bold text-white sm:text-5xl">
             Get Your Free Consultation
           </h2>
-          <p className="text-xl text-primary-100">
-            Tell us about your project and we'll get back to you within 24 hours
+          <p className="text-lg text-primary-100">
+            Tell us about your trees and we&apos;ll get back to you within 24 hours
+            with advice and pricing.
           </p>
         </motion.div>
 
@@ -189,28 +217,26 @@ export function ConsultationForm() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="bg-white rounded-2xl shadow-2xl p-8 sm:p-12"
+          transition={{ duration: 0.6, delay: 0.15 }}
+          className="rounded-2xl bg-white p-8 shadow-2xl sm:p-12"
         >
           {submitStatus === 'success' ? (
-            <div className="text-center py-12">
-              <CheckCircle className="w-20 h-20 text-primary-600 mx-auto mb-6" />
-              <h3 className="text-3xl font-bold text-bark-900 mb-4">
-                Thank You!
+            <div className="py-12 text-center">
+              <CheckCircle className="mx-auto mb-6 h-20 w-20 text-primary-600" />
+              <h3 className="mb-4 text-3xl font-bold text-bark-900">
+                Thank you!
               </h3>
-              <p className="text-lg text-bark-600 mb-8">
-                We've received your consultation request. Our team will contact you within 24 hours.
+              <p className="mb-8 text-lg text-bark-600">
+                We&apos;ve received your consultation request. Our team will contact
+                you within 24 hours to discuss your trees and next steps.
               </p>
-              <Button
-                onClick={() => setSubmitStatus('idle')}
-                variant="outline"
-              >
-                Submit Another Request
+              <Button onClick={() => setSubmitStatus('idle')} variant="outline">
+                Submit another request
               </Button>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <Input
                   label="Full Name"
                   name="name"
@@ -244,17 +270,17 @@ export function ConsultationForm() {
               />
 
               <div className="w-full">
-                <label className="block text-sm font-medium text-bark-700 mb-2">
+                <label className="mb-2 block text-sm font-medium text-bark-700">
                   Service Required
                 </label>
                 <select
                   name="service"
                   value={formData.service}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-lg border-2 border-bark-200 bg-white text-bark-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
+                  className="w-full rounded-lg border-2 border-bark-200 bg-white px-4 py-3 text-bark-900 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all duration-200"
                 >
                   <option value="tree-removal">Tree Removal</option>
-                  <option value="tree-lopping">Tree Lopping & Pruning</option>
+                  <option value="tree-lopping">Tree Lopping &amp; Pruning</option>
                   <option value="tree-health">Tree Health Assessment</option>
                   <option value="emergency">Emergency Services</option>
                   <option value="waste-removal">Green Waste Removal</option>
@@ -268,7 +294,7 @@ export function ConsultationForm() {
                 name="message"
                 value={formData.message}
                 onChange={handleChange}
-                placeholder="Tell us about your tree service needs, location, and any specific requirements..."
+                placeholder="Tell us about your tree service needs, location, access, and any specific concerns..."
                 rows={5}
                 error={errors.message}
                 required
@@ -276,32 +302,34 @@ export function ConsultationForm() {
 
               {/* Image Upload Section */}
               <div className="w-full">
-                <label className="block text-sm font-medium text-bark-700 mb-2">
+                <label className="mb-2 block text-sm font-medium text-bark-700">
                   Attach Photos (Optional)
-                  <span className="text-bark-500 font-normal ml-2">
-                    Help us provide an accurate quote by sharing photos of the tree(s)
+                  <span className="ml-2 font-normal text-bark-500">
+                    Photos help us give a more accurate quote
                   </span>
                 </label>
 
                 <div
                   {...getRootProps()}
-                  className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-all duration-200 ${
+                  className={`cursor-pointer rounded-lg border-2 border-dashed p-8 text-center transition-all duration-200 ${
                     isDragActive
                       ? 'border-primary-500 bg-primary-50'
                       : 'border-bark-300 bg-bark-50 hover:border-primary-400 hover:bg-primary-50'
                   }`}
                 >
                   <input {...getInputProps()} />
-                  <Upload className="w-12 h-12 text-bark-400 mx-auto mb-4" />
+                  <Upload className="mx-auto mb-4 h-12 w-12 text-bark-400" />
                   {isDragActive ? (
-                    <p className="text-bark-700 font-medium">Drop the images here...</p>
+                    <p className="font-medium text-bark-700">
+                      Drop the images here…
+                    </p>
                   ) : (
                     <>
-                      <p className="text-bark-700 font-medium mb-2">
+                      <p className="mb-2 font-medium text-bark-700">
                         Click to upload or drag and drop
                       </p>
                       <p className="text-sm text-bark-500">
-                        PNG, JPG, WEBP up to 10MB (max 5 images)
+                        PNG, JPG, WEBP up to 10MB each (max 5 images)
                       </p>
                     </>
                   )}
@@ -311,26 +339,28 @@ export function ConsultationForm() {
                   <p className="mt-2 text-sm text-red-600">{errors.images}</p>
                 )}
 
-                {/* Image Previews */}
                 {imagePreviews.length > 0 && (
-                  <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+                  <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-5">
                     {imagePreviews.map((preview, index) => (
-                      <div key={index} className="relative group aspect-square">
+                      <div
+                        key={index}
+                        className="group relative aspect-square overflow-hidden rounded-lg border-2 border-bark-200"
+                      >
                         <img
                           src={preview}
                           alt={`Preview ${index + 1}`}
-                          className="w-full h-full object-cover rounded-lg border-2 border-bark-200"
+                          className="h-full w-full object-cover"
                         />
                         <button
                           type="button"
                           onClick={() => removeImage(index)}
-                          className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-red-600"
+                          className="absolute -top-2 -right-2 rounded-full bg-red-500 p-1 text-white opacity-0 transition-opacity duration-200 hover:bg-red-600 group-hover:opacity-100"
                           aria-label="Remove image"
                         >
-                          <X className="w-4 h-4" />
+                          <X className="h-4 w-4" />
                         </button>
-                        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-200 rounded-lg flex items-center justify-center">
-                          <ImageIcon className="w-8 h-8 text-white opacity-0 group-hover:opacity-70 transition-opacity duration-200" />
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition group-hover:bg-black/15">
+                          <ImageIcon className="h-8 w-8 text-white opacity-0 transition-opacity duration-200 group-hover:opacity-70" />
                         </div>
                       </div>
                     ))}
@@ -345,9 +375,12 @@ export function ConsultationForm() {
               </div>
 
               {submitStatus === 'error' && (
-                <div className="flex items-center gap-2 text-red-600 bg-red-50 p-4 rounded-lg">
-                  <AlertCircle className="w-5 h-5 flex-shrink-0" />
-                  <p>Something went wrong. Please try again or call us directly.</p>
+                <div className="flex items-center gap-2 rounded-lg bg-red-50 p-4 text-red-600">
+                  <AlertCircle className="h-5 w-5 flex-shrink-0" />
+                  <p>
+                    Something went wrong sending your request. Please try again or call us
+                    directly.
+                  </p>
                 </div>
               )}
 
@@ -359,12 +392,12 @@ export function ConsultationForm() {
               >
                 {isSubmitting ? (
                   <>
-                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-                    Sending...
+                    <div className="mr-2 h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                    Sending…
                   </>
                 ) : (
                   <>
-                    <Send className="w-5 h-5 mr-2" />
+                    <Send className="mr-2 h-5 w-5" />
                     Request Free Consultation
                   </>
                 )}
@@ -372,6 +405,7 @@ export function ConsultationForm() {
 
               <p className="text-center text-sm text-bark-500">
                 By submitting this form, you agree to be contacted by LMK Tree Services
+                regarding your enquiry.
               </p>
             </form>
           )}
