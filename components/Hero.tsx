@@ -1,7 +1,7 @@
 // components/Hero.tsx
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   Shield,
@@ -9,7 +9,6 @@ import {
   Clock,
   CheckCircle,
   Phone,
-  TreePine,
   Zap,
   Send,
   AlertCircle,
@@ -33,7 +32,6 @@ interface FormErrors {
 }
 
 export function Hero() {
-  const [currentImage, setCurrentImage] = useState(0);
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
@@ -46,15 +44,6 @@ export function Hero() {
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>(
     'idle'
   );
-
-  const images = ['/hero-1.jpg', '/hero-2.jpg', '/hero-3.jpg'];
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentImage((prev) => (prev + 1) % images.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [images.length]);
 
   const badges = [
     { icon: Shield, text: 'Fully Insured $20M' },
@@ -146,24 +135,18 @@ export function Hero() {
 
   return (
     <section className="relative min-h-screen overflow-hidden">
-      {/* Background Image Carousel */}
-      <div className="absolute inset-0">
-        {images.map((img, index) => (
-          <div
-            key={img}
-            className={`absolute inset-0 transform transition-opacity duration-1000 ${
-              index === currentImage ? 'opacity-100' : 'opacity-0'
-            }`}
-            style={{
-              backgroundImage: `url(${img})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              backgroundRepeat: 'no-repeat',
-            }}
-          />
-        ))}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/80" />
-      </div>
+      {/* Static Background Image */}
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage: "url('/HeroSectionBackground.jpg')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+        }}
+      />
+      {/* Dark gradient overlay for readability */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/80" />
 
       {/* Content */}
       <div className="relative z-10 mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
@@ -296,9 +279,7 @@ export function Hero() {
                   <div className="flex items-start gap-3">
                     <CheckCircle className="h-5 w-5 flex-shrink-0 text-emerald-600" />
                     <div>
-                      <p className="font-semibold text-emerald-900">
-                        Quote request sent!
-                      </p>
+                      <p className="font-semibold text-emerald-900">Quote request sent!</p>
                       <p className="text-sm text-emerald-700">
                         We&apos;ll contact you within 24 hours with pricing and next
                         steps.
@@ -370,7 +351,7 @@ export function Hero() {
                     className="w-full rounded-lg border-2 border-bark-200 bg-white px-4 py-3 text-bark-900 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all"
                   >
                     <option value="tree-removal">Tree Removal</option>
-                    <option value="tree-lopping">Tree Lopping & Pruning</option>
+                    <option value="tree-lopping">Tree Lopping &amp; Pruning</option>
                     <option value="tree-health">Tree Health Assessment</option>
                     <option value="emergency">Emergency Services</option>
                     <option value="waste-removal">Green Waste Removal</option>
