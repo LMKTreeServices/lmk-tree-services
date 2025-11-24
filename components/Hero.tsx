@@ -45,12 +45,6 @@ export function Hero() {
     'idle'
   );
 
-  const badges = [
-    { icon: Shield, text: 'Fully Insured $20M' },
-    { icon: Award, text: 'ISA Certified' },
-    { icon: Clock, text: '24/7 Emergency' },
-  ];
-
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
 
@@ -149,28 +143,7 @@ export function Hero() {
       <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/80" />
 
       {/* Content */}
-      <div className="relative z-10 mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
-        {/* Trust Badges - Top */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="mb-8 flex flex-wrap justify-center gap-3"
-        >
-          {badges.map((badge, index) => (
-            <motion.div
-              key={badge.text}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: index * 0.1 }}
-              className="flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs font-medium text-white backdrop-blur-md"
-            >
-              <badge.icon className="h-4 w-4 text-emerald-300" />
-              <span>{badge.text}</span>
-            </motion.div>
-          ))}
-        </motion.div>
-
+      <div className="relative z-10 mx-auto max-w-7xl px-4 pt-32 pb-20 sm:px-6 lg:px-8">
         <div className="grid gap-12 lg:grid-cols-2 lg:items-start">
           {/* Left Side - Headlines and Info */}
           <motion.div

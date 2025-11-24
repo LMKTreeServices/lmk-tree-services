@@ -27,11 +27,12 @@ export function Header() {
 
   return (
     <>
+      {/* Fixed Header */}
       <motion.header
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white shadow-sm ${
-          isScrolled ? 'py-3' : 'py-4'
+        className={`fixed top-0 left-0 right-0 z-50 bg-white shadow-sm transition-all duration-300 ${
+          isScrolled ? 'py-2' : 'py-3'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -63,7 +64,6 @@ export function Header() {
 
             {/* CTA Buttons */}
             <div className="hidden md:flex items-center gap-4">
-
               <a
                 href="tel:0429187791"
                 className="flex items-center gap-2 px-4 py-2 bg-green-50 text-green-700 rounded-full font-semibold hover:bg-green-100 transition-all"
@@ -80,17 +80,19 @@ export function Header() {
               </button>
             </div>
 
-            {/* Mobile Menu Button */}
+            {/* Mobile menu button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="lg:hidden p-2 rounded-lg text-gray-700"
             >
               {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
-
           </div>
         </div>
       </motion.header>
+
+      {/* Spacer to prevent overlap */}
+      <div className="h-[90px]" />
 
       {/* Mobile Menu */}
       <AnimatePresence>
