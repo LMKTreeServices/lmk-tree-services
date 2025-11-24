@@ -6,7 +6,11 @@ import { Process } from '@/components/Process'
 import { About } from '@/components/About'
 import { Testimonials } from '@/components/Testimonials'
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import { ConsultationForm } from '@/components/ConsultationForm'
+=======
+import { FAQ } from '@/components/FAQ'
+>>>>>>> Stashed changes
 =======
 import { FAQ } from '@/components/FAQ'
 >>>>>>> Stashed changes
@@ -22,7 +26,11 @@ export default function Home() {
       <About />
       <Testimonials />
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
       <ConsultationForm />
+=======
+      <FAQ />
+>>>>>>> Stashed changes
 =======
       <FAQ />
 >>>>>>> Stashed changes
