@@ -75,7 +75,7 @@ export function Process() {
         </motion.div>
 
         {/* Vertical timeline */}
-        <div className="relative border-l-2 border-bark-200 pl-8 space-y-14">
+        <div className="space-y-14">
           {steps.map((step, index) => (
             <motion.div
               key={step.title}
@@ -83,12 +83,15 @@ export function Process() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.05 }}
-              className="relative flex items-stretch gap-4"
+              className="flex items-center gap-6"
             >
               {/* Marker */}
-              <div className="flex items-center justify-center h-full w-8 -ml-[30px]">
+              <div className="flex items-center justify-center self-stretch">
                 <span className="h-3 w-3 rounded-full bg-green-600 ring-4 ring-green-100" />
               </div>
+
+              {/* Vertical line */}
+              <div className="w-px self-stretch bg-bark-200" />
 
               {/* Content */}
               <div className="bg-bark-50 shadow-sm border border-bark-100 rounded-2xl p-6 flex-1">
