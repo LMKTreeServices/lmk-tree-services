@@ -21,7 +21,6 @@ export function Header() {
   const navItems = [
     { name: 'Services', href: '#services' },
     { name: 'About', href: '#about' },
-    { name: 'Testimonials', href: '#testimonials' },
   ]
 
   const scrollToTop = () => {
