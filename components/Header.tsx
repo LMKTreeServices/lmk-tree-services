@@ -38,8 +38,11 @@ export function Header() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
 
-            {/* LOGO */}
-            <div className="flex items-center">
+            {/* LOGO (CLICKABLE) */}
+            <a
+              href="https://lmktreeservices.com.au"
+              className="flex items-center"
+            >
               <Image
                 src="/logo.png"
                 alt="LMK Tree Services Logo"
@@ -47,7 +50,7 @@ export function Header() {
                 height={81}
                 priority
               />
-            </div>
+            </a>
 
             {/* Desktop Navigation */}
             <nav className="hidden lg:flex items-center gap-8">
@@ -91,7 +94,7 @@ export function Header() {
         </div>
       </motion.header>
 
-      {/* Spacer to prevent overlap */}
+      {/* Spacer */}
       <div className="h-[90px]" />
 
       {/* Mobile Menu */}
