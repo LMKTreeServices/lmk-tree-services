@@ -252,9 +252,9 @@ export function Hero() {
               transition={{ duration: 0.6, delay: 0.2 }}
             >
               <h1 className="mb-6 text-4xl font-bold text-white sm:text-5xl lg:text-6xl xl:text-7xl">
-                <span className="block">LMK Tree</span>
+                <span className="block">Melbourne</span>
                 <span className="block bg-gradient-to-r from-emerald-300 via-green-300 to-emerald-400 bg-clip-text text-transparent">
-                  Services
+                  Tree Removal
                 </span>
               </h1>
             </motion.div>
@@ -296,9 +296,9 @@ export function Hero() {
               className="space-y-3"
             >
               {[
-                'Free quotes with fixed pricing - no surprises',
+                'Free quotes',
+                'Certified arborists',
                 'Same day service for urgent tree work',
-                'Certified arborists with $20M insurance',
                 'Complete cleanup & green waste removal',
               ].map((item, index) => (
                 <motion.div
