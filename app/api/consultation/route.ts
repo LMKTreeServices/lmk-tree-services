@@ -50,12 +50,12 @@ export async function POST(request: Request) {
       'tree-removal': 'Tree Removal',
       'tree-lopping': 'Tree Lopping & Pruning',
       'tree-health': 'Tree Health Assessment',
-      'emergency': 'Emergency Services',
+      emergency: 'Emergency Services',
       'waste-removal': 'Green Waste Removal',
       'land-clearing': 'Land Clearing',
       'stump-grinding': 'Stump Grinding',
-      'mulching': 'Mulching',
-      'other': 'Other Service',
+      mulching: 'Mulching',
+      other: 'Other Service',
     }
 
     const serviceName = serviceNames[service] || service || 'General Enquiry'
@@ -74,6 +74,7 @@ export async function POST(request: Request) {
     const formattedPhone = formatPhone(phone)
     const firstName = name.split(' ')[0]
 
+    // Keep attachments, but no inline preview HTML
     const attachments =
       images && images.length > 0
         ? images.map((base64Image: string, index: number) => ({
@@ -82,26 +83,6 @@ export async function POST(request: Request) {
             encoding: 'base64',
           }))
         : []
-
-    const imagePreviewHtml =
-      images && images.length > 0
-        ? `
-        <tr>
-          <td colspan="2" style="padding: 20px 8px 8px 8px;">
-            <h3 style="color: #166534; margin: 0 0 12px 0; font-size: 16px;">📷 Attached Photos (${images.length})</h3>
-            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-              ${images
-                .map(
-                  (img: string, idx: number) => `
-                <img src="${img}" alt="Tree photo ${idx + 1}" style="width: 120px; height: 120px; object-fit: cover; border-radius: 8px; border: 2px solid #e5e7eb;" />
-              `
-                )
-                .join('')}
-            </div>
-          </td>
-        </tr>
-      `
-        : ''
 
     const notificationEmail =
       process.env.NOTIFICATION_EMAIL || 'kyle@lmktreeservices.com.au'
@@ -128,7 +109,13 @@ export async function POST(request: Request) {
                 <td style="white-space: pre-wrap;">${cleanMessage}</td>
               </tr>
             </table>
-            ${imagePreviewHtml}
+            ${
+              images && images.length > 0
+                ? `<p style="margin-top:16px; color:#374151; font-size:14px;">
+                     ${images.length} photo${images.length > 1 ? 's' : ''} attached below.
+                   </p>`
+                : ''
+            }
           </body>
         </html>
       `,

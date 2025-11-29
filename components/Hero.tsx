@@ -360,22 +360,30 @@ export function Hero() {
                     className="w-full rounded-xl border-2 border-gray-200 bg-gray-50 px-4 py-3 text-sm"
                   />
 
-                  {/* SERVICE DROPDOWN */}
-                  <select
-                    name="service"
-                    value={formData.service}
-                    onChange={handleChange}
-                    className="w-full rounded-xl border-2 border-gray-200 bg-gray-50 px-4 py-3 text-sm appearance-none cursor-pointer"
-                  >
-                    <option value="">Select Service (Optional)</option>
-                    <option value="tree-removal">Tree Removal</option>
-                    <option value="tree-lopping">Tree Lopping &amp; Pruning</option>
-                    <option value="stump-grinding">Stump Grinding</option>
-                    <option value="land-clearing">Land Clearing</option>
-                    <option value="mulching">Mulching</option>
-                    <option value="emergency">Emergency Services</option>
-                    <option value="other">Other Service</option>
-                  </select>
+                  {/* SERVICE DROPDOWN WITH ICON */}
+                  <div className="relative">
+                    <select
+                      name="service"
+                      value={formData.service}
+                      onChange={handleChange}
+                      className={`w-full rounded-xl border-2 border-gray-200 bg-gray-50 px-4 py-3 pr-10 text-sm appearance-none cursor-pointer ${
+                        formData.service === '' ? 'text-gray-400' : 'text-gray-900'
+                      }`}
+                    >
+                      <option value="">Select Service</option>
+                      <option value="tree-removal">Tree Removal</option>
+                      <option value="tree-lopping">Tree Lopping &amp; Pruning</option>
+                      <option value="stump-grinding">Stump Grinding</option>
+                      <option value="land-clearing">Land Clearing</option>
+                      <option value="mulching">Mulching</option>
+                      <option value="emergency">Emergency Services</option>
+                      <option value="other">Other Service</option>
+                    </select>
+
+                    <ChevronDown
+                      className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400"
+                    />
+                  </div>
 
                   <textarea
                     name="message"
@@ -447,13 +455,29 @@ export function Hero() {
                     )}
                   </div>
 
-                  <button
+                  {/* SUBMIT BUTTON WITH BIDIRECTIONAL SHEEN */}
+                  <motion.button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full rounded-xl bg-gradient-to-r from-emerald-600 to-green-600 px-6 py-4 font-semibold text-white shadow-lg disabled:opacity-50"
+                    className="relative w-full overflow-hidden rounded-xl bg-gradient-to-r from-emerald-600 to-green-600 px-6 py-4 font-semibold text-white shadow-lg disabled:cursor-not-allowed disabled:opacity-50"
+                    initial="initial"
+                    whileHover="hover"
                   >
-                    {isSubmitting ? 'Sending…' : 'Get Your Free Quote'}
-                  </button>
+                    <span className="relative z-10">
+                      {isSubmitting ? 'Sending…' : 'Get Your Free Quote'}
+                    </span>
+
+                    {/* Sheen overlay */}
+                    <motion.span
+                      aria-hidden="true"
+                      className="pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent"
+                      variants={{
+                        initial: { x: '-120%' },
+                        hover: { x: '120%' },
+                      }}
+                      transition={{ duration: 0.9, ease: 'easeInOut' }}
+                    />
+                  </motion.button>
                 </form>
               </div>
             </div>

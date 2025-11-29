@@ -2,7 +2,7 @@
 'use client'
 
 import React from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion } from 'framer-motion'
 import {
   Phone,
   ClipboardCheck,
@@ -57,9 +57,20 @@ const steps = [
   },
 ]
 
+// ⬇️ NEW: scroll-to-top function
+function scrollToTop() {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  })
+}
+
 export function Process() {
   return (
-    <section id="process" className="relative overflow-hidden bg-gradient-to-b from-gray-50 to-white py-24">
+    <section
+      id="process"
+      className="relative overflow-hidden bg-gradient-to-b from-gray-50 to-white py-24"
+    >
       {/* Background decorations */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute left-0 top-1/4 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-emerald-50 blur-3xl" />
@@ -84,7 +95,7 @@ export function Process() {
           >
             OUR PROCESS
           </motion.span>
-          
+
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -94,7 +105,7 @@ export function Process() {
           >
             How We Handle Your Tree Work
           </motion.h2>
-          
+
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -108,7 +119,7 @@ export function Process() {
 
         {/* Timeline */}
         <div className="relative">
-          {/* Vertical line - hidden on mobile, visible on larger screens */}
+          {/* Vertical line */}
           <div className="absolute left-8 top-0 hidden h-full w-0.5 bg-gradient-to-b from-emerald-200 via-green-300 to-emerald-200 md:left-1/2 md:block md:-translate-x-1/2" />
 
           <div className="space-y-8 md:space-y-12">
@@ -120,26 +131,37 @@ export function Process() {
                 viewport={{ once: true, margin: '-100px' }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className={`relative flex flex-col md:flex-row ${
-                  index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
+                  index % 2 === 0
+                    ? 'md:flex-row'
+                    : 'md:flex-row-reverse'
                 } items-start gap-6 md:gap-12`}
               >
                 {/* Timeline dot */}
                 <div className="absolute left-8 top-0 hidden h-4 w-4 -translate-x-1/2 rounded-full border-4 border-white bg-emerald-500 shadow-lg md:left-1/2 md:block" />
 
                 {/* Content card */}
-                <div className={`w-full md:w-1/2 ${index % 2 === 0 ? 'md:pr-12' : 'md:pl-12'}`}>
+                <div
+                  className={`w-full md:w-1/2 ${
+                    index % 2 === 0 ? 'md:pr-12' : 'md:pl-12'
+                  }`}
+                >
                   <div className="group relative overflow-hidden rounded-2xl border border-gray-100 bg-white p-6 shadow-md transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
                     {/* Gradient accent */}
-                    <div className={`absolute top-0 left-0 h-1 w-full bg-gradient-to-r ${step.color}`} />
-                    
+                    <div
+                      className={`absolute top-0 left-0 h-1 w-full bg-gradient-to-r ${step.color}`}
+                    />
+
                     {/* Step number */}
-                    <span className={`inline-block bg-gradient-to-r ${step.color} bg-clip-text text-sm font-bold text-transparent`}>
+                    <span
+                      className={`inline-block bg-gradient-to-r ${step.color} bg-clip-text text-sm font-bold text-transparent`}
+                    >
                       STEP {step.number}
                     </span>
 
                     <div className="mt-4 flex items-start gap-4">
-                      {/* Icon */}
-                      <div className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ${step.color} shadow-lg`}>
+                      <div
+                        className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ${step.color} shadow-lg`}
+                      >
                         <step.icon className="h-6 w-6 text-white" />
                       </div>
 
@@ -153,12 +175,11 @@ export function Process() {
                       </div>
                     </div>
 
-                    {/* Subtle hover effect */}
+                    {/* Hover shine */}
                     <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-emerald-50/50 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
                   </div>
                 </div>
 
-                {/* Spacer for alternating layout */}
                 <div className="hidden w-1/2 md:block" />
               </motion.div>
             ))}
@@ -173,13 +194,13 @@ export function Process() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="mt-16 text-center"
         >
-          <a
-            href="#consultation"
+          <button
+            onClick={scrollToTop}
             className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-600 to-green-600 px-8 py-4 font-semibold text-white shadow-lg shadow-emerald-500/25 transition-all hover:shadow-xl hover:shadow-emerald-500/30 hover:-translate-y-0.5"
           >
             Start Your Free Quote
             <span className="transition-transform group-hover:translate-x-1">→</span>
-          </a>
+          </button>
         </motion.div>
       </div>
     </section>
