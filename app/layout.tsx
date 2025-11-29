@@ -1,6 +1,7 @@
 // app/layout.tsx
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import Script from 'next/script'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -105,16 +106,18 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="scroll-smooth">
-      <head>
-        <script
+      <body className={inter.className}>
+        {/* JSON-LD local business schema for SEO */}
+        <Script
+          id="local-business-schema"
           type="application/ld+json"
-          // JSON-LD must be a plain string
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(localBusinessSchema),
-          }}
-        />
-      </head>
-      <body className={inter.className}>{children}</body>
+          strategy="afterInteractive"
+        >
+          {JSON.stringify(localBusinessSchema)}
+        </Script>
+
+        {children}
+      </body>
     </html>
   )
 }
