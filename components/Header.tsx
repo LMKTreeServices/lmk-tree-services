@@ -37,6 +37,33 @@ export function Header() {
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' })
 
+  const handleNavClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    href: string
+  ) => {
+    // Only intercept internal section links
+    if (href.startsWith('#')) {
+      e.preventDefault()
+      const targetId = href.replace('#', '')
+      const targetElement = document.getElementById(targetId)
+
+      if (targetElement) {
+        const headerOffset = 90 // matches the spacer height
+        const elementPosition =
+          targetElement.getBoundingClientRect().top + window.pageYOffset
+        const offsetPosition = elementPosition - headerOffset
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth',
+        })
+      }
+
+      // Close mobile menu after navigation
+      setIsMobileMenuOpen(false)
+    }
+  }
+
   return (
     <>
       {/* Fixed Header */}
@@ -69,7 +96,8 @@ export function Header() {
                 <a
                   key={item.name}
                   href={item.href}
-                  className="font-medium text-gray-700 hover:text-green-600 transition-colors"
+                  onClick={(e) => handleNavClick(e, item.href)}
+                  className="font-medium text-gray-700 hover:text-green-600 transition-colors cursor-pointer"
                 >
                   {item.name}
                 </a>
@@ -98,14 +126,19 @@ export function Header() {
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="lg:hidden p-2 rounded-lg text-gray-700"
+              aria-label="Toggle navigation menu"
             >
-              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {isMobileMenuOpen ? (
+                <X className="w-6 h-6" />
+              ) : (
+                <Menu className="w-6 h-6" />
+              )}
             </button>
           </div>
         </div>
       </motion.header>
 
-      {/* Spacer */}
+      {/* Spacer to offset fixed header */}
       <div className="h-[90px]" />
 
       {/* Mobile Menu */}
@@ -128,7 +161,7 @@ export function Header() {
                   <a
                     key={item.name}
                     href={item.href}
-                    onClick={() => setIsMobileMenuOpen(false)}
+                    onClick={(e) => handleNavClick(e, item.href)}
                     className="block text-lg font-medium text-gray-700 hover:text-green-600 py-2"
                   >
                     {item.name}
