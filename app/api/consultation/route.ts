@@ -2,9 +2,16 @@
 import { NextResponse } from 'next/server'
 
 export async function POST(request: Request) {
-  // Import Resend inside the function so it doesn't run at build time
-  const { Resend } = await import('resend')
-  const resend = new Resend(process.env.RESEND_API_KEY)
+  // Import Nodemailer dynamically so it only runs on the server
+  const { default: nodemailer } = await import('nodemailer')
+
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.GMAIL_USER,
+      pass: process.env.GMAIL_APP_PASSWORD,
+    },
+  })
 
   try {
     const body = await request.json()
@@ -32,19 +39,21 @@ export async function POST(request: Request) {
     }
 
     const serviceName = serviceNames[service] || service || 'General Enquiry'
-    
+
     // Extract suburb from message if present
     const suburbMatch = message.match(/Suburb:\s*([^\n]+)/i)
     const suburb = suburbMatch ? suburbMatch[1].trim() : 'Not specified'
-    
+
     // Clean message (remove suburb prefix if present)
     const cleanMessage = message.replace(/Suburb:\s*[^\n]+\n*/i, '').trim()
-    
+
     // Format phone for display
     const formatPhone = (p: string) => {
       const cleaned = p.replace(/\D/g, '')
       if (cleaned.length === 10 && cleaned.startsWith('0')) {
-        return `${cleaned.slice(0, 4)} ${cleaned.slice(4, 7)} ${cleaned.slice(7)}`
+        return `${cleaned.slice(0, 4)} ${cleaned.slice(4, 7)} ${cleaned.slice(
+          7
+        )}`
       }
       return p
     }
@@ -52,35 +61,46 @@ export async function POST(request: Request) {
     const firstName = name.split(' ')[0]
 
     // Prepare attachments for email if images exist
-    const attachments = images && images.length > 0
-      ? images.map((base64Image: string, index: number) => ({
-          filename: imageNames?.[index] || `tree-photo-${index + 1}.jpg`,
-          content: base64Image.split(',')[1],
-        }))
-      : []
+    const attachments =
+      images && images.length > 0
+        ? images.map((base64Image: string, index: number) => ({
+            filename: imageNames?.[index] || `tree-photo-${index + 1}.jpg`,
+            content: base64Image.split(',')[1],
+            encoding: 'base64', // important for Nodemailer
+          }))
+        : []
 
     // Generate image preview HTML
-    const imagePreviewHtml = images && images.length > 0
-      ? `
+    const imagePreviewHtml =
+      images && images.length > 0
+        ? `
         <tr>
           <td colspan="2" style="padding: 20px 8px 8px 8px;">
             <h3 style="color: #166534; margin: 0 0 12px 0; font-size: 16px;">📷 Attached Photos (${images.length})</h3>
             <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-              ${images.map((img: string, idx: number) => `
-                <img src="${img}" alt="Tree photo ${idx + 1}" style="width: 120px; height: 120px; object-fit: cover; border-radius: 8px; border: 2px solid #e5e7eb;" />
-              `).join('')}
+              ${images
+                .map(
+                  (img: string, idx: number) => `
+                <img src="${img}" alt="Tree photo ${
+                    idx + 1
+                  }" style="width: 120px; height: 120px; object-fit: cover; border-radius: 8px; border: 2px solid #e5e7eb;" />
+              `
+                )
+                .join('')}
             </div>
           </td>
         </tr>
       `
-      : ''
+        : ''
 
-    const notificationEmail = process.env.NOTIFICATION_EMAIL || 'kyle@lmktreeservices.com.au'
+    const notificationEmail =
+      process.env.NOTIFICATION_EMAIL || 'kyle@lmktreeservices.com.au'
 
-    // Send email notification to Kyle
-    await resend.emails.send({
-      from: 'LMK Tree Services <onboarding@resend.dev>',
+    // ===== 1) EMAIL TO KYLE (THE LEAD) =====
+    await transporter.sendMail({
+      from: `LMK Tree Services <${process.env.GMAIL_USER}>`,
       to: notificationEmail,
+      replyTo: email, // so reply goes to the customer
       subject: `🌳 New Quote Request: ${serviceName} - ${name} (${suburb})`,
       html: `
         <!DOCTYPE html>
@@ -100,7 +120,10 @@ export async function POST(request: Request) {
             <div style="background: white; padding: 24px; border-radius: 0 0 12px 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);">
               
               <div style="margin-bottom: 24px;">
-                <a href="tel:${phone.replace(/\s/g, '')}" style="display: inline-block; background: #16a34a; color: white; text-decoration: none; padding: 14px 24px; border-radius: 8px; font-weight: 600; text-align: center; font-size: 15px; margin-right: 12px;">
+                <a href="tel:${phone.replace(
+                  /\s/g,
+                  ''
+                )}" style="display: inline-block; background: #16a34a; color: white; text-decoration: none; padding: 14px 24px; border-radius: 8px; font-weight: 600; text-align: center; font-size: 15px; margin-right: 12px;">
                   📞 Call ${firstName}
                 </a>
                 <a href="mailto:${email}" style="display: inline-block; background: #f3f4f6; color: #374151; text-decoration: none; padding: 14px 24px; border-radius: 8px; font-weight: 600; text-align: center; font-size: 15px;">
@@ -116,7 +139,10 @@ export async function POST(request: Request) {
                 <tr style="border-bottom: 1px solid #e5e7eb;">
                   <td style="padding: 14px 8px; font-weight: 600; color: #6b7280; font-size: 14px;">Phone</td>
                   <td style="padding: 14px 8px;">
-                    <a href="tel:${phone.replace(/\s/g, '')}" style="color: #16a34a; text-decoration: none; font-weight: 600; font-size: 15px;">${formattedPhone}</a>
+                    <a href="tel:${phone.replace(
+                      /\s/g,
+                      ''
+                    )}" style="color: #16a34a; text-decoration: none; font-weight: 600; font-size: 15px;">${formattedPhone}</a>
                   </td>
                 </tr>
                 <tr style="border-bottom: 1px solid #e5e7eb;">
@@ -161,12 +187,12 @@ export async function POST(request: Request) {
         </body>
         </html>
       `,
-      attachments: attachments,
+      attachments,
     })
 
-    // Send confirmation email to customer
-    await resend.emails.send({
-      from: 'LMK Tree Services <onboarding@resend.dev>',
+    // ===== 2) CONFIRMATION EMAIL TO CUSTOMER =====
+    await transporter.sendMail({
+      from: `LMK Tree Services <${process.env.GMAIL_USER}>`,
       to: email,
       subject: `Thanks ${firstName}! We've received your quote request`,
       html: `
@@ -187,21 +213,31 @@ export async function POST(request: Request) {
             <div style="background: white; padding: 32px 24px; border-radius: 0 0 12px 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);">
               
               <p style="color: #374151; font-size: 16px; line-height: 1.7; margin: 0 0 24px 0;">
-                We've received your request for <strong style="color: #16a34a;">${serviceName}</strong>${suburb !== 'Not specified' ? ` in <strong>${suburb}</strong>` : ''} and Kyle is reviewing it now.
+                We've received your request for <strong style="color: #16a34a;">${serviceName}</strong>${
+        suburb !== 'Not specified' ? ` in <strong>${suburb}</strong>` : ''
+      } and Kyle is reviewing it now.
               </p>
               
-              ${images && images.length > 0 ? `
+              ${
+                images && images.length > 0
+                  ? `
                 <div style="background: #dcfce7; padding: 16px; border-radius: 8px; margin-bottom: 24px; border-left: 4px solid #16a34a;">
                   <p style="margin: 0; color: #166534; font-size: 14px;">
-                    <strong>✅ ${images.length} photo${images.length > 1 ? 's' : ''} received</strong> — this helps us provide a more accurate quote!
+                    <strong>✅ ${images.length} photo${
+                      images.length > 1 ? 's' : ''
+                    } received</strong> — this helps us provide a more accurate quote!
                   </p>
                 </div>
-              ` : ''}
+              `
+                  : ''
+              }
               
               <div style="background: #f9fafb; padding: 24px; border-radius: 12px; margin-bottom: 24px;">
                 <h2 style="color: #166534; margin: 0 0 16px 0; font-size: 18px;">📋 What happens next?</h2>
                 <ol style="color: #374151; line-height: 2; margin: 0; padding-left: 20px; font-size: 15px;">
-                  <li>Kyle reviews your request${images && images.length > 0 ? ' and photos' : ''}</li>
+                  <li>Kyle reviews your request${
+                    images && images.length > 0 ? ' and photos' : ''
+                  }</li>
                   <li>We'll contact you within <strong>24 hours</strong></li>
                   <li>We'll arrange a free on-site assessment if needed</li>
                   <li>You'll receive a detailed, no-obligation quote</li>
