@@ -197,7 +197,7 @@ export function AreasServiced() {
               Don&apos;t see your suburb?
             </p>
             <p className="text-gray-600">
-              We travel up to an hour from Drouin — from Narre Warren to Traralgon and everywhere in between. Get in touch to confirm we service your area.
+              Feel free to submit a quote - and we will see whether we can work with you!
             </p>
           </motion.div>
         </motion.div>
