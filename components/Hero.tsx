@@ -6,8 +6,11 @@ import { motion, Reorder } from 'framer-motion';
 import {
   CheckCircle,
   Phone,
+  Send,
+  AlertCircle,
   Upload,
   X,
+  GripVertical,
   ChevronDown,
 } from 'lucide-react';
 import { useDropzone } from 'react-dropzone';
@@ -19,7 +22,6 @@ interface FormData {
   phone: string;
   suburb: string;
   message: string;
-  service: string;
 }
 
 interface FormErrors {
@@ -44,7 +46,6 @@ export function Hero() {
     phone: '',
     suburb: '',
     message: '',
-    service: '',
   });
 
   const [imageItems, setImageItems] = useState<ImageItem[]>([]);
@@ -133,7 +134,7 @@ export function Hero() {
           name: `${formData.firstName} ${formData.lastName}`.trim(),
           email: formData.email,
           phone: formData.phone,
-          service: formData.service,
+          service: 'tree-removal',
           message: formData.suburb
             ? `Suburb: ${formData.suburb}\n\n${formData.message}`
             : formData.message,
@@ -151,7 +152,6 @@ export function Hero() {
           phone: '',
           suburb: '',
           message: '',
-          service: '',
         });
         imageItems.forEach((i) => URL.revokeObjectURL(i.preview));
         setImageItems([]);
@@ -168,9 +168,7 @@ export function Hero() {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     setErrors((prev) => ({ ...prev, [e.target.name]: undefined }));
@@ -181,13 +179,14 @@ export function Hero() {
 
   return (
     <section className="relative min-h-[105vh] md:min-h-[103vh] lg:min-h-[100vh] overflow-hidden">
+
       {/* STATIC background with mobile + desktop images */}
       <div
         className="
           absolute inset-0 
           bg-cover bg-center bg-no-repeat
-          bg-[url('/mobileherosectionbackground.jpg')]
-          md:bg-[url('/HeroSectionBackgroundNo2.jpg')]
+          bg-[url('/mobileherosectionbackground.jpg')]   /* Mobile */
+          md:bg-[url('/HeroSectionBackgroundNo2.jpg')]   /* Desktop */
         "
       />
 
@@ -204,9 +203,9 @@ export function Hero() {
           >
             <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}>
               <h1 className="mb-6 text-4xl font-bold text-white sm:text-5xl lg:text-6xl xl:text-7xl">
-                <span className="block">Gippsland</span>
+                <span className="block">Melbourne</span>
                 <span className="block bg-gradient-to-r from-emerald-300 via-green-300 to-emerald-400 bg-clip-text text-transparent">
-                  Tree Services
+                  Tree Removal
                 </span>
               </h1>
             </motion.div>
@@ -224,10 +223,8 @@ export function Hero() {
                 0429 187 791
               </a>
             </p>
-
             <p className="mb-8 text-white/70">
-              Same-day service available across Gippsland &amp; Melbourne&apos;s outer
-              south-east.
+              Same-day service available across Melbourne’s south-east.
             </p>
 
             <div className="space-y-3 text-white/90">
@@ -280,7 +277,7 @@ export function Hero() {
                       Quote request sent!
                     </p>
                     <p className="text-sm text-emerald-700">
-                      We&apos;ll contact you within 24 hours.
+                      We'll contact you within 24 hours.
                     </p>
                   </div>
                 )}
@@ -303,7 +300,7 @@ export function Hero() {
                         value={formData.firstName}
                         onChange={handleChange}
                         placeholder="First Name *"
-                        className="w-full rounded-xl border-2 border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 placeholder-gray-500"
+                        className="w-full rounded-xl border-2 border-gray-200 bg-gray-50 px-4 py-3 text-sm"
                       />
                       {errors.firstName && (
                         <p className="text-xs text-red-600">{errors.firstName}</p>
@@ -316,7 +313,7 @@ export function Hero() {
                       value={formData.lastName}
                       onChange={handleChange}
                       placeholder="Last Name"
-                      className="w-full rounded-xl border-2 border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 placeholder-gray-500"
+                      className="w-full rounded-xl border-2 border-gray-200 bg-gray-50 px-4 py-3 text-sm"
                     />
                   </div>
 
@@ -328,7 +325,7 @@ export function Hero() {
                         value={formData.phone}
                         onChange={handleChange}
                         placeholder="Phone *"
-                        className="w-full rounded-xl border-2 border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 placeholder-gray-500"
+                        className="w-full rounded-xl border-2 border-gray-200 bg-gray-50 px-4 py-3 text-sm"
                       />
                       {errors.phone && (
                         <p className="text-xs text-red-600">{errors.phone}</p>
@@ -342,7 +339,7 @@ export function Hero() {
                         value={formData.email}
                         onChange={handleChange}
                         placeholder="Email *"
-                        className="w-full rounded-xl border-2 border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 placeholder-gray-500"
+                        className="w-full rounded-xl border-2 border-gray-200 bg-gray-50 px-4 py-3 text-sm"
                       />
                       {errors.email && (
                         <p className="text-xs text-red-600">{errors.email}</p>
@@ -356,25 +353,8 @@ export function Hero() {
                     value={formData.suburb}
                     onChange={handleChange}
                     placeholder="Suburb"
-                    className="w-full rounded-xl border-2 border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 placeholder-gray-500"
+                    className="w-full rounded-xl border-2 border-gray-200 bg-gray-50 px-4 py-3 text-sm"
                   />
-
-                  {/* SERVICE DROPDOWN */}
-                  <select
-                    name="service"
-                    value={formData.service}
-                    onChange={handleChange}
-                    className="w-full rounded-xl border-2 border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 appearance-none cursor-pointer"
-                  >
-                    <option value="">Select Service (Optional)</option>
-                    <option value="tree-removal">Tree Removal</option>
-                    <option value="tree-lopping">Tree Lopping &amp; Pruning</option>
-                    <option value="stump-grinding">Stump Grinding</option>
-                    <option value="land-clearing">Land Clearing</option>
-                    <option value="mulching">Mulching</option>
-                    <option value="emergency">Emergency Services</option>
-                    <option value="other">Other Service</option>
-                  </select>
 
                   <textarea
                     name="message"
@@ -382,7 +362,7 @@ export function Hero() {
                     onChange={handleChange}
                     placeholder="Job Description *"
                     rows={3}
-                    className="w-full rounded-xl border-2 border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 placeholder-gray-500 resize-none"
+                    className="w-full rounded-xl border-2 border-gray-200 bg-gray-50 px-4 py-3 text-sm resize-none"
                   />
                   {errors.message && (
                     <p className="text-xs text-red-600">{errors.message}</p>
@@ -402,7 +382,7 @@ export function Hero() {
                       <Upload className="mx-auto mb-2 h-6 w-6 text-gray-400" />
                       <p className="text-sm text-gray-600">Upload Images</p>
                       <p className="text-xs text-gray-400">
-                        Drag &amp; drop or click (max 5)
+                        Drag & drop or click (max 5)
                       </p>
                     </div>
 
@@ -423,7 +403,7 @@ export function Hero() {
                               <div className="relative h-14 w-14">
                                 <button
                                   type="button"
-                                  className="absolute -top-1.5 -right-1.5 z-20 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-white"
+                                  className="absolute -top-1.5 -right-1.5 z-20 h-5 w-5 rounded-full bg-red-500 text-white flex items-center justify-center"
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     removeImage(item.id);
@@ -432,10 +412,9 @@ export function Hero() {
                                   <X className="h-3 w-3" />
                                 </button>
 
-                                <div className="h-full w-full overflow-hidden rounded-lg border-2 border-gray-200 bg-gray-100">
+                                <div className="h-full w-full rounded-lg border-2 border-gray-200 bg-gray-100 overflow-hidden">
                                   <img
                                     src={item.preview}
-                                    alt="Preview"
                                     className="h-full w-full object-cover"
                                   />
                                 </div>
