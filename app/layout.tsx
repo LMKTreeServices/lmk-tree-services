@@ -7,12 +7,14 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://lmktreeservices.com.au'),
   title: {
-    default: 'LMK Tree Services | Tree Removal & Lopping Melbourne South-East',
+    default:
+      'Tree Removal Pakenham, Berwick & Melbourne South-East | LMK Tree Services',
     template: '%s | LMK Tree Services',
   },
   description:
-    "LMK Tree Services provides professional tree removal, lopping, pruning, stump grinding and land clearing across Melbourne's south-east including Pakenham, Berwick, Beaconsfield, Officer, Narre Warren, Clyde, Cranbourne and surrounding suburbs.",
+    "Fast, safe and fully insured tree removal, lopping, pruning, stump grinding and land clearing across Melbourne's south-east, including Pakenham, Berwick, Beaconsfield, Officer, Narre Warren, Clyde, Cranbourne and surrounding suburbs. Same-day free quotes available.",
   keywords: [
     'tree removal Melbourne',
     'tree removal Pakenham',
@@ -35,20 +37,25 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: 'website',
-    title: 'LMK Tree Services | Tree Removal & Lopping Melbourne South-East',
+    title:
+      'Tree Removal Pakenham, Berwick & Melbourne South-East | LMK Tree Services',
     description:
-      "Fast, safe and fully insured tree removal, pruning, stump grinding and lopping across Melbourne's south-east including Pakenham, Berwick, Officer, Narre Warren and Clyde.",
+      "Professional, fully insured tree removal, lopping, pruning and stump grinding across Melbourne's south-east including Pakenham, Berwick, Officer, Narre Warren and Clyde. Free quotes and same-day emergency call-outs.",
     url: 'https://lmktreeservices.com.au',
     siteName: 'LMK Tree Services',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'LMK Tree Services | Tree Removal & Lopping Melbourne South-East',
+    title:
+      'Tree Removal Pakenham, Berwick & Melbourne South-East | LMK Tree Services',
     description:
-      "Professional tree removal, lopping, pruning and stump grinding across Melbourne's south-east.",
+      "Professional tree removal, lopping, pruning and stump grinding across Melbourne's south-east. Fully insured arborists with fast, free quotes.",
   },
   icons: {
     icon: '/favicon.ico',
+  },
+  alternates: {
+    canonical: '/',
   },
 }
 
