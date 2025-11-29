@@ -29,10 +29,10 @@ export function Header() {
   }, [isMobileMenuOpen])
 
   const navItems = [
-    { name: 'Services', href: '#services' },
     { name: 'About', href: '#about' },
-    { name: 'Gallery', href: '#gallery' },
     { name: 'Testimonials', href: '#testimonials' },
+    { name: 'Services', href: '#services' },
+    { name: 'Gallery', href: '#gallery' },
   ]
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -41,7 +41,6 @@ export function Header() {
     e: React.MouseEvent<HTMLAnchorElement>,
     href: string
   ) => {
-    // Only intercept internal section links
     if (href.startsWith('#')) {
       e.preventDefault()
       const targetId = href.replace('#', '')
@@ -59,7 +58,6 @@ export function Header() {
         })
       }
 
-      // Close mobile menu after navigation
       setIsMobileMenuOpen(false)
     }
   }
