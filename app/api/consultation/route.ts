@@ -1,10 +1,11 @@
 // app/api/consultation/route.ts
 import { NextResponse } from 'next/server'
-import { Resend } from 'resend'
-
-const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function POST(request: Request) {
+  // Import Resend inside the function so it doesn't run at build time
+  const { Resend } = await import('resend')
+  const resend = new Resend(process.env.RESEND_API_KEY)
+
   try {
     const body = await request.json()
     const { name, email, phone, service, message, images, imageNames } = body
@@ -25,140 +26,229 @@ export async function POST(request: Request) {
       'emergency': 'Emergency Services',
       'waste-removal': 'Green Waste Removal',
       'land-clearing': 'Land Clearing',
+      'stump-grinding': 'Stump Grinding',
+      'mulching': 'Mulching',
       'other': 'Other Service',
     }
 
-    const serviceName = serviceNames[service] || service
+    const serviceName = serviceNames[service] || service || 'General Enquiry'
+    
+    // Extract suburb from message if present
+    const suburbMatch = message.match(/Suburb:\s*([^\n]+)/i)
+    const suburb = suburbMatch ? suburbMatch[1].trim() : 'Not specified'
+    
+    // Clean message (remove suburb prefix if present)
+    const cleanMessage = message.replace(/Suburb:\s*[^\n]+\n*/i, '').trim()
+    
+    // Format phone for display
+    const formatPhone = (p: string) => {
+      const cleaned = p.replace(/\D/g, '')
+      if (cleaned.length === 10 && cleaned.startsWith('0')) {
+        return `${cleaned.slice(0, 4)} ${cleaned.slice(4, 7)} ${cleaned.slice(7)}`
+      }
+      return p
+    }
+    const formattedPhone = formatPhone(phone)
+    const firstName = name.split(' ')[0]
 
     // Prepare attachments for email if images exist
     const attachments = images && images.length > 0
       ? images.map((base64Image: string, index: number) => ({
           filename: imageNames?.[index] || `tree-photo-${index + 1}.jpg`,
-          content: base64Image.split(',')[1], // Remove data URL prefix
+          content: base64Image.split(',')[1],
         }))
       : []
 
-    // Generate image thumbnails HTML for email
-    const imageThumbnailsHtml = images && images.length > 0
+    // Generate image preview HTML
+    const imagePreviewHtml = images && images.length > 0
       ? `
-        <h3 style="color: #333; margin-top: 20px;">Attached Photos (${images.length})</h3>
-        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin-top: 10px;">
-          ${images.map((img: string, idx: number) => `
-            <img src="${img}" alt="Tree photo ${idx + 1}" style="width: 100%; height: 150px; object-fit: cover; border-radius: 8px; border: 2px solid #ddd;" />
-          `).join('')}
-        </div>
+        <tr>
+          <td colspan="2" style="padding: 20px 8px 8px 8px;">
+            <h3 style="color: #166534; margin: 0 0 12px 0; font-size: 16px;">📷 Attached Photos (${images.length})</h3>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+              ${images.map((img: string, idx: number) => `
+                <img src="${img}" alt="Tree photo ${idx + 1}" style="width: 120px; height: 120px; object-fit: cover; border-radius: 8px; border: 2px solid #e5e7eb;" />
+              `).join('')}
+            </div>
+          </td>
+        </tr>
       `
-      : '<p style="color: #666; font-style: italic;">No photos attached</p>'
+      : ''
 
-    // Send email notification to business owner
+    const notificationEmail = process.env.NOTIFICATION_EMAIL || 'kyle@lmktreeservices.com.au'
+
+    // Send email notification to Kyle
     await resend.emails.send({
-      from: 'LMK Tree Services <kyle@lmktreeservices.com>',
-      to: process.env.NOTIFICATION_EMAIL || 'kyle@lmktreeservices.com',
-      subject: `🌳 New Lead: ${serviceName} - ${name}`,
+      from: 'LMK Tree Services <onboarding@resend.dev>',
+      to: notificationEmail,
+      subject: `🌳 New Quote Request: ${serviceName} - ${name} (${suburb})`,
       html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <div style="background-color: #16a34a; color: white; padding: 20px; border-radius: 8px 8px 0 0;">
-            <h2 style="margin: 0;">🌳 New Consultation Request!</h2>
-          </div>
-          
-          <div style="background-color: #f5f5f5; padding: 20px; border-radius: 0 0 8px 8px;">
-            <h3 style="color: #333; margin-top: 0;">Client Details</h3>
-            <table style="width: 100%; border-collapse: collapse;">
-              <tr style="border-bottom: 1px solid #ddd;">
-                <td style="padding: 12px 8px; font-weight: bold;">Name:</td>
-                <td style="padding: 12px 8px;">${name}</td>
-              </tr>
-              <tr style="border-bottom: 1px solid #ddd;">
-                <td style="padding: 12px 8px; font-weight: bold;">Phone:</td>
-                <td style="padding: 12px 8px;"><a href="tel:${phone}" style="color: #16a34a; text-decoration: none; font-weight: bold;">${phone}</a></td>
-              </tr>
-              <tr style="border-bottom: 1px solid #ddd;">
-                <td style="padding: 12px 8px; font-weight: bold;">Email:</td>
-                <td style="padding: 12px 8px;"><a href="mailto:${email}" style="color: #16a34a; text-decoration: none;">${email}</a></td>
-              </tr>
-              <tr style="border-bottom: 1px solid #ddd;">
-                <td style="padding: 12px 8px; font-weight: bold;">Service:</td>
-                <td style="padding: 12px 8px;"><span style="background: #dcfce7; padding: 4px 12px; border-radius: 12px; color: #166534;">${serviceName}</span></td>
-              </tr>
-            </table>
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        </head>
+        <body style="margin: 0; padding: 0; background-color: #f3f4f6; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
+          <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
             
-            <h3 style="color: #333; margin-top: 20px;">Project Description</h3>
-            <div style="background: white; padding: 15px; border-radius: 8px; border-left: 4px solid #16a34a;">
-              <p style="white-space: pre-wrap; margin: 0; line-height: 1.6;">${message}</p>
+            <div style="background: linear-gradient(135deg, #16a34a 0%, #166534 100%); color: white; padding: 24px; border-radius: 12px 12px 0 0; text-align: center;">
+              <h1 style="margin: 0; font-size: 24px; font-weight: 700;">🌳 New Quote Request!</h1>
+              <p style="margin: 8px 0 0 0; opacity: 0.9; font-size: 14px;">A potential customer is waiting to hear from you</p>
             </div>
             
-            ${imageThumbnailsHtml}
-            
-            <div style="margin-top: 20px; padding: 15px; background: #fff3cd; border-radius: 8px; border-left: 4px solid #ffc107;">
-              <p style="margin: 0; color: #856404;"><strong>⏰ Action Required:</strong> Please respond within 24 hours for best conversion rate.</p>
+            <div style="background: white; padding: 24px; border-radius: 0 0 12px 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);">
+              
+              <div style="margin-bottom: 24px;">
+                <a href="tel:${phone.replace(/\s/g, '')}" style="display: inline-block; background: #16a34a; color: white; text-decoration: none; padding: 14px 24px; border-radius: 8px; font-weight: 600; text-align: center; font-size: 15px; margin-right: 12px;">
+                  📞 Call ${firstName}
+                </a>
+                <a href="mailto:${email}" style="display: inline-block; background: #f3f4f6; color: #374151; text-decoration: none; padding: 14px 24px; border-radius: 8px; font-weight: 600; text-align: center; font-size: 15px;">
+                  ✉️ Email
+                </a>
+              </div>
+              
+              <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                <tr style="border-bottom: 1px solid #e5e7eb;">
+                  <td style="padding: 14px 8px; font-weight: 600; color: #6b7280; width: 100px; font-size: 14px;">Name</td>
+                  <td style="padding: 14px 8px; color: #111827; font-size: 15px; font-weight: 500;">${name}</td>
+                </tr>
+                <tr style="border-bottom: 1px solid #e5e7eb;">
+                  <td style="padding: 14px 8px; font-weight: 600; color: #6b7280; font-size: 14px;">Phone</td>
+                  <td style="padding: 14px 8px;">
+                    <a href="tel:${phone.replace(/\s/g, '')}" style="color: #16a34a; text-decoration: none; font-weight: 600; font-size: 15px;">${formattedPhone}</a>
+                  </td>
+                </tr>
+                <tr style="border-bottom: 1px solid #e5e7eb;">
+                  <td style="padding: 14px 8px; font-weight: 600; color: #6b7280; font-size: 14px;">Email</td>
+                  <td style="padding: 14px 8px;">
+                    <a href="mailto:${email}" style="color: #16a34a; text-decoration: none; font-size: 15px;">${email}</a>
+                  </td>
+                </tr>
+                <tr style="border-bottom: 1px solid #e5e7eb;">
+                  <td style="padding: 14px 8px; font-weight: 600; color: #6b7280; font-size: 14px;">Suburb</td>
+                  <td style="padding: 14px 8px; color: #111827; font-size: 15px;">📍 ${suburb}</td>
+                </tr>
+                <tr style="border-bottom: 1px solid #e5e7eb;">
+                  <td style="padding: 14px 8px; font-weight: 600; color: #6b7280; font-size: 14px;">Service</td>
+                  <td style="padding: 14px 8px;">
+                    <span style="background: #dcfce7; color: #166534; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600;">${serviceName}</span>
+                  </td>
+                </tr>
+                ${imagePreviewHtml}
+              </table>
+              
+              <div style="margin-top: 20px;">
+                <h3 style="color: #166534; margin: 0 0 12px 0; font-size: 16px;">📝 Job Description</h3>
+                <div style="background: #f9fafb; padding: 16px; border-radius: 8px; border-left: 4px solid #16a34a;">
+                  <p style="margin: 0; color: #374151; line-height: 1.7; white-space: pre-wrap; font-size: 14px;">${cleanMessage}</p>
+                </div>
+              </div>
+              
+              <div style="margin-top: 24px; background: #fef3c7; border: 1px solid #f59e0b; padding: 16px; border-radius: 8px;">
+                <p style="margin: 0; color: #92400e; font-size: 14px;">
+                  <strong>⏰ Quick Tip:</strong> Responding within 1 hour increases your chance of winning this job by 7x!
+                </p>
+              </div>
+              
             </div>
+            
+            <div style="text-align: center; padding: 20px; color: #9ca3af; font-size: 12px;">
+              <p style="margin: 0;">This lead was submitted via lmktreeservices.com.au</p>
+            </div>
+            
           </div>
-        </div>
+        </body>
+        </html>
       `,
       attachments: attachments,
     })
 
-    // Send confirmation email to client
+    // Send confirmation email to customer
     await resend.emails.send({
-      from: 'LMK Tree Services <kyle@lmktreeservices.com>',
+      from: 'LMK Tree Services <onboarding@resend.dev>',
       to: email,
-      subject: 'We\'ve Received Your Consultation Request - LMK Tree Services',
+      subject: `Thanks ${firstName}! We've received your quote request`,
       html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <div style="background-color: #16a34a; color: white; padding: 30px 20px; text-align: center; border-radius: 8px 8px 0 0;">
-            <h1 style="margin: 0; font-size: 28px;">Thank You, ${name}!</h1>
-            <p style="margin: 10px 0 0 0; font-size: 16px; opacity: 0.9;">Your consultation request has been received</p>
-          </div>
-          
-          <div style="padding: 30px 20px; background: #f9fafb; border-radius: 0 0 8px 8px;">
-            <p style="font-size: 16px; color: #333; line-height: 1.6;">
-              We've received your request for <strong style="color: #16a34a;">${serviceName}</strong> and our team is reviewing it now.
-            </p>
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        </head>
+        <body style="margin: 0; padding: 0; background-color: #f3f4f6; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
+          <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
             
-            ${images && images.length > 0 ? `
-              <div style="background: #dcfce7; padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #16a34a;">
-                <p style="margin: 0; color: #166534;">✅ <strong>${images.length} photo(s)</strong> received - this will help us provide an accurate quote!</p>
+            <div style="background: linear-gradient(135deg, #16a34a 0%, #166534 100%); color: white; padding: 32px 24px; border-radius: 12px 12px 0 0; text-align: center;">
+              <h1 style="margin: 0; font-size: 28px; font-weight: 700;">Thanks, ${firstName}! 🌳</h1>
+              <p style="margin: 12px 0 0 0; opacity: 0.95; font-size: 16px;">Your quote request has been received</p>
+            </div>
+            
+            <div style="background: white; padding: 32px 24px; border-radius: 0 0 12px 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);">
+              
+              <p style="color: #374151; font-size: 16px; line-height: 1.7; margin: 0 0 24px 0;">
+                We've received your request for <strong style="color: #16a34a;">${serviceName}</strong>${suburb !== 'Not specified' ? ` in <strong>${suburb}</strong>` : ''} and Kyle is reviewing it now.
+              </p>
+              
+              ${images && images.length > 0 ? `
+                <div style="background: #dcfce7; padding: 16px; border-radius: 8px; margin-bottom: 24px; border-left: 4px solid #16a34a;">
+                  <p style="margin: 0; color: #166534; font-size: 14px;">
+                    <strong>✅ ${images.length} photo${images.length > 1 ? 's' : ''} received</strong> — this helps us provide a more accurate quote!
+                  </p>
+                </div>
+              ` : ''}
+              
+              <div style="background: #f9fafb; padding: 24px; border-radius: 12px; margin-bottom: 24px;">
+                <h2 style="color: #166534; margin: 0 0 16px 0; font-size: 18px;">📋 What happens next?</h2>
+                <ol style="color: #374151; line-height: 2; margin: 0; padding-left: 20px; font-size: 15px;">
+                  <li>Kyle reviews your request${images && images.length > 0 ? ' and photos' : ''}</li>
+                  <li>We'll contact you within <strong>24 hours</strong></li>
+                  <li>We'll arrange a free on-site assessment if needed</li>
+                  <li>You'll receive a detailed, no-obligation quote</li>
+                </ol>
               </div>
-            ` : ''}
-            
-            <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0; border: 2px solid #16a34a;">
-              <h3 style="margin: 0 0 15px 0; color: #16a34a; font-size: 18px;">📋 What Happens Next?</h3>
-              <ol style="color: #555; line-height: 1.8; margin: 0; padding-left: 20px;">
-                <li>Our expert arborist will review your requirements${images && images.length > 0 ? ' and photos' : ''}</li>
-                <li>We'll contact you within <strong>24 hours</strong> via phone or email</li>
-                <li>We'll schedule a free site visit if needed</li>
-                <li>You'll receive a detailed, no-obligation quote</li>
-              </ol>
+              
+              <div style="background: linear-gradient(135deg, #166534 0%, #14532d 100%); padding: 24px; border-radius: 12px; text-align: center; margin-bottom: 24px;">
+                <p style="color: #dcfce7; margin: 0 0 12px 0; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Need it done urgently?</p>
+                <a href="tel:0429187791" style="display: inline-block; background: white; color: #166534; text-decoration: none; padding: 14px 32px; border-radius: 8px; font-weight: 700; font-size: 18px;">
+                  📞 Call 0429 187 791
+                </a>
+              </div>
+              
+              <div style="border-top: 1px solid #e5e7eb; padding-top: 24px;">
+                <p style="color: #374151; font-size: 15px; line-height: 1.7; margin: 0;">
+                  Thanks for considering LMK Tree Services. We look forward to helping you!
+                </p>
+                <p style="color: #374151; font-size: 15px; margin: 16px 0 0 0;">
+                  Cheers,<br>
+                  <strong style="color: #16a34a;">Kyle</strong><br>
+                  <span style="color: #6b7280; font-size: 14px;">LMK Tree Services</span>
+                </p>
+              </div>
+              
             </div>
             
-            <div style="background: #dcfce7; padding: 20px; border-radius: 8px; text-align: center; margin: 20px 0;">
-              <p style="margin: 0 0 10px 0; color: #166534; font-size: 14px; font-weight: 600;">NEED IMMEDIATE ASSISTANCE?</p>
-              <a href="tel:0429187791" style="display: inline-block; background: #16a34a; color: white; text-decoration: none; padding: 12px 30px; border-radius: 6px; font-weight: bold; font-size: 18px;">📞 Call 0429 187 791</a>
+            <div style="text-align: center; padding: 24px; color: #9ca3af; font-size: 12px;">
+              <p style="margin: 0 0 8px 0;"><strong style="color: #6b7280;">LMK Tree Services</strong></p>
+              <p style="margin: 0 0 4px 0;">Servicing Gippsland & Melbourne's Outer South-East</p>
+              <p style="margin: 0 0 4px 0;">📞 0429 187 791</p>
+              <p style="margin: 16px 0 0 0; color: #d1d5db;">Fully Licensed & Insured</p>
             </div>
             
-            <p style="font-size: 16px; color: #333; margin-top: 30px;">
-              Best regards,<br>
-              <strong style="color: #16a34a;">The LMK Tree Services Team</strong>
-            </p>
           </div>
-          
-          <div style="text-align: center; padding: 20px; color: #666; font-size: 12px;">
-            <p style="margin: 5px 0;">LMK Tree Services | Melbourne, Victoria</p>
-            <p style="margin: 5px 0;">Phone: 0429 187 791 | Email: kyle@lmktreeservices.com</p>
-            <p style="margin: 15px 0 5px 0; color: #999;">Fully Licensed & Insured | ABN: 12 345 678 901</p>
-          </div>
-        </div>
+        </body>
+        </html>
       `,
     })
 
     return NextResponse.json(
-      { message: 'Consultation request sent successfully' },
+      { message: 'Quote request sent successfully' },
       { status: 200 }
     )
   } catch (error) {
-    console.error('Error processing consultation request:', error)
+    console.error('Error processing quote request:', error)
     return NextResponse.json(
-      { error: 'Failed to process consultation request' },
+      { error: 'Failed to process quote request' },
       { status: 500 }
     )
   }
