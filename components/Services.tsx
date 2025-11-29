@@ -10,37 +10,37 @@ const services = [
     title: 'Tree Lopping',
     description: 'Safe and controlled tree reduction',
     image: '/services/lopping.jpg',
-    color: 'from-emerald-600/80 to-emerald-900/90',
+    color: 'from-emerald-600/60 to-emerald-900/60',
   },
   {
     title: 'Tree Removal',
     description: 'Safe removal of unwanted trees',
     image: '/services/tree-removal.jpg',
-    color: 'from-green-600/80 to-green-900/90',
+    color: 'from-green-600/60 to-green-900/60',
   },
   {
     title: 'Residential Tree Pruning',
     description: 'Expert shaping and health maintenance',
     image: '/services/pruning.jpg',
-    color: 'from-teal-600/80 to-teal-900/90',
+    color: 'from-teal-600/60 to-teal-900/60',
   },
   {
     title: 'Stump Grinding',
     description: 'Complete stump removal below ground',
     image: '/services/stump-grinding.jpg',
-    color: 'from-emerald-700/80 to-emerald-950/90',
+    color: 'from-emerald-700/60 to-emerald-950/60',
   },
   {
     title: 'Land Clearing',
     description: 'Complete site preparation for development',
     image: '/services/land-clearing.jpg',
-    color: 'from-green-700/80 to-green-950/90',
+    color: 'from-green-700/60 to-green-950/60',
   },
   {
     title: 'Mulching',
     description: 'Eco-friendly waste recycling',
     image: '/services/mulching.jpg',
-    color: 'from-emerald-600/80 to-green-900/90',
+    color: 'from-emerald-600/60 to-green-900/60',
   },
 ]
 
