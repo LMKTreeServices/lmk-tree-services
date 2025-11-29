@@ -93,9 +93,7 @@ export async function POST(request: Request) {
               ${images
                 .map(
                   (img: string, idx: number) => `
-                <img src="${img}" alt="Tree photo ${
-                    idx + 1
-                  }" style="width: 120px; height: 120px; object-fit: cover; border-radius: 8px; border: 2px solid #e5e7eb;" />
+                <img src="${img}" alt="Tree photo ${idx + 1}" style="width: 120px; height: 120px; object-fit: cover; border-radius: 8px; border: 2px solid #e5e7eb;" />
               `
                 )
                 .join('')}
@@ -108,20 +106,50 @@ export async function POST(request: Request) {
     const notificationEmail =
       process.env.NOTIFICATION_EMAIL || 'kyle@lmktreeservices.com.au'
 
+    // 1) Email to Kyle
     await transporter.sendMail({
       from: `LMK Tree Services <${process.env.GMAIL_USER}>`,
       to: notificationEmail,
       replyTo: email,
       subject: `🌳 New Quote Request: ${serviceName} - ${name} (${suburb})`,
-      html: `<!DOCTYPE html><html><body>${imagePreviewHtml}</body></html>`,
+      html: `
+        <!DOCTYPE html>
+        <html>
+          <body style="font-family: sans-serif; background-color: #f9fafb; padding: 20px;">
+            <h2 style="color: #166534;">🌳 New Quote Request</h2>
+            <table cellpadding="8">
+              <tr><td><strong>Name:</strong></td><td>${name}</td></tr>
+              <tr><td><strong>Email:</strong></td><td>${email}</td></tr>
+              <tr><td><strong>Phone:</strong></td><td>${formattedPhone}</td></tr>
+              <tr><td><strong>Service:</strong></td><td>${serviceName}</td></tr>
+              <tr><td><strong>Suburb:</strong></td><td>${suburb}</td></tr>
+              <tr>
+                <td style="vertical-align: top;"><strong>Job Description:</strong></td>
+                <td style="white-space: pre-wrap;">${cleanMessage}</td>
+              </tr>
+            </table>
+            ${imagePreviewHtml}
+          </body>
+        </html>
+      `,
       attachments,
     })
 
+    // 2) Confirmation email to customer
     await transporter.sendMail({
       from: `LMK Tree Services <${process.env.GMAIL_USER}>`,
       to: email,
       subject: `Thanks ${firstName}! We've received your quote request`,
-      html: `<!DOCTYPE html><html><body><h1>Thanks, ${firstName}! 🌳</h1></body></html>`,
+      html: `
+        <!DOCTYPE html>
+        <html>
+          <body style="font-family: sans-serif; background-color: #f9fafb; padding: 20px;">
+            <h1 style="color: #166534;">Thanks, ${firstName}! 🌳</h1>
+            <p>We've received your quote request and will be in touch shortly.</p>
+            <p style="margin-top: 24px;">– The LMK Tree Services Team</p>
+          </body>
+        </html>
+      `,
     })
 
     return NextResponse.json(
