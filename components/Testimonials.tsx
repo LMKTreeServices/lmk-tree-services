@@ -7,64 +7,134 @@ import { Star, ChevronLeft, ChevronRight, Quote } from 'lucide-react'
 
 const testimonials = [
   {
-    name: 'Sarah M.',
-    location: 'Glen Waverley',
-    timeAgo: '2 months ago',
+    name: 'Jennifer Henriquez',
+    location: 'Pakenham',
+    timeAgo: '5 months ago',
     quote:
-      'The team removed two huge gums over our house with zero fuss. They protected our roof and cleaned up so well you wouldn\'t know they were here.',
+      'Kyle and his boys removed a very large gum tree from a tight backyard space and made it look easy. I never felt concerned at any point and couldn’t have chosen a better team for the job.',
     rating: 5,
-    initial: 'S',
+    initial: 'J',
     color: 'bg-rose-500',
   },
   {
-    name: 'Daniel P.',
-    location: 'Mount Waverley',
-    timeAgo: '3 months ago',
+    name: "Hannah L'Eveille",
+    location: 'Pakenham',
+    timeAgo: '4 months ago',
     quote:
-      'Clear quote, turned up on time, and handled council requirements for a protected tree. Professional from start to finish.',
+      'Kyle and his team did an amazing job getting rid of a 20+ year-old palm tree in our front yard – quick, clean, friendly and with great communication. Highly recommended.',
     rating: 5,
-    initial: 'D',
+    initial: 'H',
     color: 'bg-blue-500',
   },
   {
-    name: 'Leanne & Chris',
-    location: 'Chadstone',
-    timeAgo: '3 months ago',
+    name: 'Rob Withers',
+    location: 'Pakenham',
+    timeAgo: '5 months ago',
     quote:
-      'We had storm damage on a Sunday. They were on-site quickly, made everything safe and checked in again the next day. Couldn\'t be happier.',
+      'Excellent service and price. Kyle and the team were professional, punctual, quick, friendly and helpful. They removed multiple trees and stumps and left the property spotless.',
     rating: 5,
-    initial: 'L',
+    initial: 'R',
     color: 'bg-amber-500',
   },
   {
-    name: 'Thomas R.',
-    location: 'Camberwell',
-    timeAgo: '4 months ago',
+    name: 'Ebony Cornelius',
+    location: 'Pakenham',
+    timeAgo: '5 months ago',
     quote:
-      'We\'ve used LMK for multiple strata properties. Reliable, safety-focused, and they always communicate clearly with residents.',
+      'Had nothing but a great experience with Kyle and the team. He was attentive, made removing our garden easy and the pricing was very reasonable. I’ve already passed his details to friends and family.',
     rating: 5,
-    initial: 'T',
+    initial: 'E',
     color: 'bg-emerald-500',
   },
   {
-    name: 'Michelle & Aaron',
-    location: 'Ashwood',
+    name: 'Neville Wright',
+    location: 'Pakenham',
     timeAgo: '5 months ago',
     quote:
-      'Professional, efficient and genuinely careful around our home. The crew explained everything before they started and left the place spotless.',
+      'Very happy with Kyle and the boys. They turned up on time, got straight into it, finished in a few hours and cleaned up after themselves. They clearly have the right equipment and know what they’re doing.',
     rating: 5,
-    initial: 'M',
+    initial: 'N',
     color: 'bg-purple-500',
   },
   {
-    name: 'Rob W.',
-    location: 'Burwood',
+    name: 'Sharon Collard',
+    location: 'Pakenham',
     timeAgo: '5 months ago',
     quote:
-      'Excellent service and price. Kyle and the team were professional, punctual, quick, friendly and helpful. Left our property clean and tidy.',
+      'Kyle and the boys were great. They arrived on time, took real pride in their work and checked that we were happy with everything before they packed up. The price was more than reasonable.',
     rating: 5,
-    initial: 'R',
+    initial: 'S',
     color: 'bg-sky-500',
+  },
+  {
+    name: 'Angelo Mete',
+    location: 'Pakenham',
+    timeAgo: '5 months ago',
+    quote:
+      'Kyle and his team were very friendly and efficient. They did a great job trimming and chopping trees and cleaned up after themselves. A good bunch of hardworking young men.',
+    rating: 5,
+    initial: 'A',
+    color: 'bg-teal-500',
+  },
+  {
+    name: 'Maree',
+    location: 'Pakenham',
+    timeAgo: '5 months ago',
+    quote:
+      'We had Kyle trim the hedge at our rental property and couldn’t be happier. He was professional, punctual and did a clean, tidy job. The hedge looks great and the property was left spotless.',
+    rating: 5,
+    initial: 'M',
+    color: 'bg-pink-500',
+  },
+  {
+    name: 'Sue McGowan',
+    location: 'Pakenham',
+    timeAgo: '5 months ago',
+    quote:
+      'Kyle and his crew took down a tree for us and the communication before, during and after was fantastic. The team were efficient and left our property spotless. I can absolutely recommend them.',
+    rating: 5,
+    initial: 'S',
+    color: 'bg-indigo-500',
+  },
+  {
+    name: 'Emily Blake',
+    location: 'Pakenham',
+    timeAgo: '5 months ago',
+    quote:
+      'Kyle and the team are very professional and put a lot of care into their work. The customer service was amazing and I couldn’t have asked for a better experience.',
+    rating: 5,
+    initial: 'E',
+    color: 'bg-lime-500',
+  },
+  {
+    name: 'Maxine',
+    location: 'Pakenham',
+    timeAgo: '5 months ago',
+    quote:
+      'Kyle responded quickly to my request for a quote and completed the job soon after. He was very pleasant and helpful and I’d happily recommend him to others.',
+    rating: 5,
+    initial: 'M',
+    color: 'bg-orange-500',
+  },
+  {
+    name: 'Bryan Reynolds',
+    location: 'Pakenham',
+    timeAgo: '5 months ago',
+    quote:
+      'Kyle trimmed and shaped the tree at the front of my house. It was all done in about 30 minutes with the right equipment, a great clean-up and very professional service.',
+    rating: 5,
+    initial: 'B',
+    color: 'bg-cyan-500',
+  },
+  {
+    name: 'Peter Howgate',
+    location: 'Pakenham',
+    timeAgo: 'Edited a week ago',
+    quote:
+      'Great job. Kyle and his team are easy to work with, punctual and clearly know what they are doing.',
+    rating: 5,
+    initial: 'P',
+    color: 'bg-fuchsia-500',
   },
 ]
 
@@ -137,55 +207,42 @@ export function Testimonials() {
   }
 
   return (
-    <section id="testimonials" className="relative overflow-hidden bg-gradient-to-b from-gray-50 to-white py-24">
+    <section
+      id="testimonials"
+      className="relative overflow-hidden bg-gradient-to-b from-gray-50 to-white py-16"
+    >
       {/* Background decoration */}
-      <div className="absolute top-0 left-1/4 h-96 w-96 rounded-full bg-emerald-100/50 blur-3xl" />
-      <div className="absolute bottom-0 right-1/4 h-96 w-96 rounded-full bg-green-100/50 blur-3xl" />
+      <div className="absolute top-0 left-1/4 h-80 w-80 rounded-full bg-emerald-100/50 blur-3xl" />
+      <div className="absolute bottom-0 right-1/4 h-80 w-80 rounded-full bg-green-100/50 blur-3xl" />
 
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        {/* Header */}
+        {/* Header: stars block left, Google logo right */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mb-12 flex flex-col items-center gap-6 sm:flex-row sm:items-start sm:justify-between"
+          transition={{ duration: 0.5 }}
+          className="mb-10 flex flex-col items-center gap-6 sm:flex-row sm:items-start sm:justify-between"
         >
+          {/* Left: stars + count */}
           <div className="text-center sm:text-left">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: 0.2 }}
-              className="mb-3 inline-flex items-center gap-2"
-            >
-              <span className="rounded-lg bg-emerald-100 px-4 py-2 text-sm font-bold text-emerald-700">
-                EXCELLENT
-              </span>
-            </motion.div>
-            
             <div className="flex items-center justify-center gap-1 sm:justify-start">
               {[...Array(5)].map((_, i) => (
-                <motion.div
+                <Star
                   key={i}
-                  initial={{ opacity: 0, scale: 0 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.3, delay: 0.3 + i * 0.1 }}
-                >
-                  <Star className="h-7 w-7 fill-yellow-400 text-yellow-400 drop-shadow-sm" />
-                </motion.div>
+                  className="h-7 w-7 fill-yellow-400 text-yellow-400 drop-shadow-sm"
+                />
               ))}
             </div>
-            <p className="mt-2 text-sm text-gray-600">Based on 18 reviews</p>
+            <p className="mt-2 text-sm text-gray-600">Based on 19 Google reviews</p>
           </div>
 
-          {/* Google branding */}
+          {/* Right: Google branding */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.4 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
             className="flex items-center gap-3"
           >
             <GoogleLogo className="h-10 w-10" />
@@ -235,37 +292,38 @@ export function Testimonials() {
                     {/* Quote decoration */}
                     <Quote className="absolute top-4 right-4 h-8 w-8 text-gray-100 transition-colors group-hover:text-emerald-100" />
 
-                    <div className="mb-4 flex items-start justify-between">
-                      <div className="flex items-center gap-3">
-                        {/* Avatar */}
-                        <div className={`flex h-12 w-12 items-center justify-center rounded-full ${t.color} text-lg font-bold text-white shadow-lg`}>
-                          {t.initial}
-                        </div>
-                        <div>
-                          <p className="font-semibold text-gray-900">{t.name}</p>
-                          <p className="text-xs text-gray-500">{t.timeAgo}</p>
-                        </div>
+                    <div className="mb-4 flex items-center gap-3">
+                      {/* Avatar */}
+                      <div
+                        className={`flex h-12 w-12 items-center justify-center rounded-full ${t.color} text-lg font-bold text-white shadow-lg`}
+                      >
+                        {t.initial}
                       </div>
-                      <GoogleLogo className="h-5 w-5" />
+                      <div>
+                        <p className="font-semibold text-gray-900">{t.name}</p>
+                        <p className="text-xs text-gray-500">{t.timeAgo}</p>
+                      </div>
                     </div>
 
                     {/* Stars with verification badge */}
                     <div className="mb-4 flex items-center gap-1">
                       {[...Array(t.rating)].map((_, i) => (
-                        <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                        <Star
+                          key={i}
+                          className="h-4 w-4 fill-yellow-400 text-yellow-400"
+                        />
                       ))}
-                      <svg className="ml-1 h-4 w-4 text-blue-500" viewBox="0 0 24 24" fill="currentColor">
+                      <svg
+                        className="ml-1 h-4 w-4 text-blue-500"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                      >
                         <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
                       </svg>
                     </div>
 
-                    {/* Quote */}
+                    {/* Quote text */}
                     <p className="text-sm leading-relaxed text-gray-700">{t.quote}</p>
-
-                    {/* Location tag */}
-                    <div className="mt-4 inline-flex items-center rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-600">
-                      📍 {t.location}
-                    </div>
                   </motion.div>
                 ))}
               </motion.div>
@@ -273,7 +331,7 @@ export function Testimonials() {
           </div>
 
           {/* Dots navigation */}
-          <div className="mt-8 flex justify-center gap-2">
+          <div className="mt-6 flex justify-center gap-2">
             {[...Array(Math.ceil(testimonials.length / 2))].map((_, index) => (
               <button
                 key={index}
@@ -288,23 +346,6 @@ export function Testimonials() {
             ))}
           </div>
         </div>
-
-        {/* Read more link */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.5 }}
-          className="mt-8 text-center"
-        >
-          <a
-            href="#"
-            className="inline-flex items-center gap-2 text-sm font-medium text-emerald-600 transition-colors hover:text-emerald-700"
-          >
-            Read more reviews on Google
-            <ChevronRight className="h-4 w-4" />
-          </a>
-        </motion.div>
       </div>
     </section>
   )

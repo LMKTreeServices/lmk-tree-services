@@ -73,7 +73,7 @@ export function Services() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="mb-4 text-3xl font-bold text-primary-800 sm:text-4xl lg:text-5xl"
           >
-            We Specialise in the following areas of tree removal
+            We specialise in the following areas of tree removal
           </motion.h2>
           <motion.div
             initial={{ scaleX: 0 }}
