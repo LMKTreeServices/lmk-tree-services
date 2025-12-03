@@ -6,14 +6,14 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X, ZoomIn, ChevronLeft, ChevronRight } from 'lucide-react'
 
 const galleryImages = [
-  { src: '/gallery/image1.jpg', alt: 'Tree removal in progress', category: 'removal' },
-  { src: '/gallery/image2.jpg', alt: 'Arborist at work', category: 'pruning' },
-  { src: '/gallery/image3.jpg', alt: 'Cherry picker operation', category: 'removal' },
-  { src: '/gallery/image4.jpg', alt: 'Tree climbing arborist', category: 'pruning' },
-  { src: '/gallery/image5.jpg', alt: 'Stump grinding', category: 'stump' },
-  { src: '/gallery/image6.jpg', alt: 'Land clearing project', category: 'clearing' },
-  { src: '/gallery/image7.jpg', alt: 'Emergency tree work', category: 'emergency' },
-  { src: '/gallery/image8.jpg', alt: 'Finished job cleanup', category: 'cleanup' },
+  { src: '/gallery/image1.jpeg', alt: '', category: '' },
+  { src: '/gallery/image2.jpeg', alt: '', category: '' },
+  { src: '/gallery/image3.jpeg', alt: '', category: '' },
+  { src: '/gallery/image4.jpeg', alt: '', category: '' },
+  { src: '/gallery/image5.jpeg', alt: '', category: '' },
+  { src: '/gallery/image6.jpeg', alt: 't', category: '' },
+  { src: '/gallery/image7.webp', alt: 'k', category: '' },
+  { src: '/gallery/image8.jpeg', alt: '', category: '' },
 ]
 
 export function Gallery() {
