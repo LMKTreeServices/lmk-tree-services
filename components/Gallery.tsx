@@ -6,14 +6,14 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X, ZoomIn, ChevronLeft, ChevronRight } from 'lucide-react'
 
 const galleryImages = [
-  { src: '/gallery/image1.jpeg', alt: '', category: '' },
-  { src: '/gallery/image2.jpeg', alt: '', category: '' },
-  { src: '/gallery/image3.jpeg', alt: '', category: '' },
-  { src: '/gallery/image4.jpeg', alt: '', category: '' },
-  { src: '/gallery/image5.jpeg', alt: '', category: '' },
-  { src: '/gallery/image6.jpeg', alt: 't', category: '' },
+  { src: '/gallery/image1.webp', alt: '', category: '' },
+  { src: '/gallery/image2.webp', alt: '', category: '' },
+  { src: '/gallery/image3.webp', alt: '', category: '' },
+  { src: '/gallery/image4.webp', alt: '', category: '' },
+  { src: '/gallery/image5.webp', alt: '', category: '' },
+  { src: '/gallery/image6.webp', alt: 't', category: '' },
   { src: '/gallery/image7.webp', alt: 'k', category: '' },
-  { src: '/gallery/image8.jpeg', alt: '', category: '' },
+  { src: '/gallery/image8.webp', alt: '', category: '' },
 ]
 
 export function Gallery() {
